@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio | Zander</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="dark-mode">
+    <nav id="navbar">
+      <div class="nav-container">
+        <a href="#hero" class="nav-logo">Trương Minh Tiến</a>
+        <ul>
+          <li><a href="#about">About me</a></li>
+          <li><a href="#projects">My Projects</a></li>
+          <li><a href="#experience">Work Experience</a></li>
+          <li><a href="#contact">Connect</a></li>
+          <li>
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fas fa-sun"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <header id="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img src="image/zander.jpg" alt="zander" id="profile-pic" />
+        <h1 class="hero-name">Trương Minh Tiến</h1>
+        <p class="hero-title">Website Developer</p>
+        <p class="hero-school">FPT Polytechnic</p>
+      </div>
+      <a
+        href="#about"
+        class="scroll-down-btn"
+        aria-label="Scroll to About section"
+      >
+        <i class="fas fa-chevron-down"></i>
+      </a>
+    </header>
+
+    <main>
+      <section id="about" class="container section-padding">
+        <h2 class="section-title"><span>01.</span>About me</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              I'm a Software Development student at FPT Polytechnic Quy Nhon
+              (GPA 3.5/4), passionate about building clean, user-friendly
+              interfaces. I work mainly with HTML, CSS, JavaScript, Vue.js,
+              ReactJS and Bootstrap—turning creative ideas into interactive web
+              experiences. I also design UI mockups with Figma, and recently
+              gained hands-on experience in UI testing and Website development
+              at FPT Software. I've been recognized with industry certifications
+              and the Excellent Student Award.
+            </p>
+            <p>Some technologies I've been working on recently:</p>
+            <ul class="skills-list">
+              <li><i class="fas fa-check-circle"></i> React / Vue</li>
+              <li><i class="fas fa-check-circle"></i> JavaScript</li>
+              <li><i class="fas fa-check-circle"></i> Figma</li>
+              <li><i class="fas fa-check-circle"></i> Java Spring Boot</li>
+              <li><i class="fas fa-check-circle"></i> MySQL</li>
+              <li><i class="fas fa-check-circle"></i> SQL Server</li>
+            </ul>
+          </div>
+          <div class="about-image-container">
+            <img
+              src="image/zander2.jpg"
+              alt="Hình ảnh mô tả bản thân"
+              class="about-image"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="container section-padding">
+        <h2 class="section-title"><span>02.</span>My Projects</h2>
+        <div class="project-gallery">
+          <div class="project-card">
+            <div class="project-image-wrapper">
+              <img
+                src="image/FSGHackathonTAL.jpg"
+                alt="Mental Health Support"
+              />
+              <div class="project-overlay">
+                <a
+                  href="https://www.figma.com/community/file/1484467306083107963/psychological-treatment"
+                  target="_blank"
+                  class="project-link"
+                  ><img src="image/figma.png" style="width: 60px" alt="Figma"
+                /></a>
+                <a
+                  href="https://github.com/tientruong05/FSG-HackathonTAL"
+                  target="_blank"
+                  class="project-link"
+                  ><img
+                    src="image/w_github.png"
+                    style="width: 60px"
+                    alt="Github"
+                /></a>
+              </div>
+            </div>
+            <div class="project-info">
+              <span class="project-type">Website</span>
+              <h3>Mental Health Support</h3>
+              <p>
+                The FSGHackathonTAL project is an online platform that supports
+                mental health by providing solutions that connect users with
+                mental health professionals, a 24/7 AI-powered chatbot, and
+                educational resources on mental well-being.
+                <span style="font-weight: bold"
+                  >This project was awarded Second Prize at the Hackathon 2025:
+                  Touch A Life competition, organized by FPT University Quy
+                  Nhon.</span
+                >
+              </p>
+              <ul class="project-tags">
+                <li>Java Spring Boot</li>
+                <li>Thymeleaf</li>
+                <li>MySQL</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-image-wrapper">
+              <img src="image/TimeLuxWatch.jpg" alt="Mental Health Support" />
+              <div class="project-overlay">
+                <a
+                  href="https://github.com/tientruong05/TimeLuxWatch"
+                  target="_blank"
+                  class="project-link"
+                  ><img
+                    src="image/w_github.png"
+                    style="width: 60px"
+                    alt="Github"
+                /></a>
+              </div>
+            </div>
+            <div class="project-info">
+              <span class="project-type">Website</span>
+              <h3>TimeLux Watch</h3>
+              <p>
+                TimeLux Watch is an e-commerce platform specializing in luxury
+                watches, built with a modern web application architecture using
+                Spring Boot for the backend and VueJS for the frontend. The
+                system offers a full range of features for both customers and
+                administrators, including product browsing, cart management,
+                order processing, as well as product, user, and statistical
+                report management.
+              </p>
+              <ul class="project-tags">
+                <li>VueJS</li>
+                <li>Java Spring Boot</li>
+                <li>SQL Server</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="container section-padding">
+        <h2 class="section-title"><span>03.</span>Work Experience</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-briefcase"></i></div>
+            <div class="timeline-content">
+              <h3>Website Developer</h3>
+              <p class="timeline-company">
+                FPT Software
+                <span class="timeline-date">(5/2025 - 8/2025)</span>
+              </p>
+              <!-- <ul>
+                <li>
+                  Analyzed user stories, JSON files, and Figma designs to
+                  thoroughly understand project requirements.
+                </li>
+                <li>
+                  Executed tests based on detailed design specifications to
+                  verify functionality and user experience.
+                </li>
+                <li>
+                  Logged and tracked bugs in Jira, fostering effective
+                  communication with the development team to resolve issues
+                  promptly.
+                </li>
+              </ul> -->
+              <div class="timeline-technologies">
+                <h4>Skills gained and utilized:</h4>
+                <span>React</span>
+                <span>Redux</span>
+                <span>JavaScript</span>
+                <span>Manual Testing</span>
+                <span>Web Testing</span>
+                <span>Git</span>
+                <span>GitLab</span>
+                <span>Communication</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-briefcase"></i></div>
+            <div class="timeline-content">
+              <h3>Manual Tester</h3>
+              <p class="timeline-company">
+                FPT Software
+                <span class="timeline-date">(8/2024 - 10/2024)</span>
+              </p>
+              <ul>
+                <li>
+                  Analyzed user stories, JSON files, and Figma designs to
+                  thoroughly understand project requirements.
+                </li>
+                <li>
+                  Executed tests based on detailed design specifications to
+                  verify functionality and user experience.
+                </li>
+                <li>
+                  Logged and tracked bugs in Jira, fostering effective
+                  communication with the development team to resolve issues
+                  promptly.
+                </li>
+              </ul>
+              <div class="timeline-technologies">
+                <h4>Skills gained and utilized:</h4>
+                <span>Manual Testing</span>
+                <span>Web Testing</span>
+                <span>HTML/CSS Validation</span>
+                <span> Jira</span>
+                <span> Communication</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="timeline-content">
+              <h3>Software Development</h3>
+              <p class="timeline-company">
+                FPT Polytechnic
+                <span class="timeline-date">(2023 - 2025)</span>
+              </p>
+              <ul>
+                <li>Excellent Student Award in 2023, 2024 & 2025.</li>
+                <li>===========</li>
+                <li>
+                  Third prize in the Code Challenge Contest organized by FPT
+                  Polytechnic Quy Nhon.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="container section-padding">
+        <h2 class="section-title"><span>04.</span>Connect with me</h2>
+        <div class="contact-methods">
+          <div class="contact-method">
+            <i class="fas fa-envelope"></i>
+            <h3>Email</h3>
+            <a href="mailto:tientm05@gmail.com">tientm05@gmail.com</a>
+          </div>
+          <div class="contact-method">
+            <i class="fab fa-linkedin"></i>
+            <h3>LinkedIn</h3>
+            <a href="https://www.linkedin.com/in/tientruong05" target="_blank"
+              >Let's connect on LinkedIn</a
+            >
+          </div>
+          <div class="contact-method">
+            <i class="fab fa-github"></i>
+            <h3>GitHub</h3>
+            <a href="https://github.com/tientruong05" target="_blank"
+              >tientruong05</a
+            >
+          </div>
+          <div class="contact-method">
+            <i class="fab fa-discord"></i>
+            <h3>Discord</h3>
+            <a href="#" target="_blank">tientruong05</a>
+          </div>
+          <div class="contact-method">
+            <i class="fab fa-facebook"></i>
+            <h3>Facebook</h3>
+            <a href="https://www.facebook.com/zandermt" target="_blank"
+              >Let's connect on Facebook</a
+            >
+          </div>
+          <div class="contact-method">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Location</h3>
+            <a href="#">Quy Nhon, Binh Dinh, Viet Nam</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; <span id="currentYear"></span> Trương Minh Tiến. Vibe Coding
+          with <span style="font-weight: bold">Gemini 2.5 Pro</span> and a
+          little <i class="fas fa-mug-hot"></i>.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
