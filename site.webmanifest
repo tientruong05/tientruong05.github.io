@@ -1,0 +1,22 @@
+{
+  "name": "Zander - Portfolio",
+  "short_name": "Zander",
+  "description": "Portfolio of Truong Minh Tien (Zander) - Web Developer",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#6366F1",
+  "background_color": "#0D1117",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}
