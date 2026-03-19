@@ -1,1331 +1,1640 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trương Minh Tiến | Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Space Grotesk for headings, JetBrains Mono for code/body -->
+    <title>Trương Minh Tiến — Web Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
       rel="stylesheet"
     />
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['"Space Grotesk"', "sans-serif"],
-              mono: ['"JetBrains Mono"', "monospace"],
-            },
-            colors: {
-              "neo-white": "#FFFDF5",
-              "neo-black": "#121212",
-              "neo-yellow": "#FFDE59",
-              "neo-purple": "#B388FF",
-              "neo-green": "#7FBC8C",
-              "neo-pink": "#FF6B6B",
-              "neo-blue": "#54A0FF",
-            },
-            boxShadow: {
-              hard: "5px 5px 0px 0px #121212",
-              "hard-sm": "3px 3px 0px 0px #121212",
-              "hard-xl": "10px 10px 0px 0px #121212",
-            },
-          },
-        },
-      };
-    </script>
-
     <style>
-      /* Custom Marquee Animation */
-      @keyframes marquee {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-50%);
-        }
-      }
-      .animate-marquee {
-        display: flex;
-        width: max-content;
-        animation: marquee 15s linear infinite;
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      /* Smooth Scroll behavior */
+      :root {
+        --bg: #f4f8f0;
+        --bg-warm: #e8f5bd;
+        --surface: #f9fbf6;
+        --ink: #1e2b1a;
+        --ink-soft: #3d5235;
+        --ink-muted: #6b8360;
+        --accent: #84b179;
+        --accent-soft: #a2cb8b;
+        --rule: rgba(30, 43, 26, 0.12);
+        --rule-strong: rgba(30, 43, 26, 0.25);
+        --bezier-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --bezier-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --bezier-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
       html {
         scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
-      /* Brutalist Scrollbar */
-      ::-webkit-scrollbar {
-        width: 12px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #fffdf5;
-        border-left: 3px solid #121212;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #121212;
-        border: 2px solid #fffdf5;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #ff6b6b;
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Outfit", sans-serif;
+        font-weight: 400;
+        line-height: 1.6;
+        overflow-x: hidden;
+        cursor: default;
       }
 
-      /* Selection Color */
-      ::selection {
-        background-color: #121212;
-        color: #ffde59;
-      }
-
-      .retro-grid {
-        background-image: linear-gradient(#121212 1px, transparent 1px),
-          linear-gradient(90deg, #121212 1px, transparent 1px);
-        background-size: 40px 40px;
-        background-position: center center;
-        opacity: 0.05;
-      }
-
-      /* Custom AOS Animations */
-      [data-aos="slide-up-bounce"] {
-        transform: translateY(100px);
-        opacity: 0;
-        transition-property: transform, opacity;
-      }
-      [data-aos="slide-up-bounce"].aos-animate {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      [data-aos="glitch"] {
-        animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-      }
-      @keyframes glitch {
-        0%,
-        100% {
-          transform: translate(0);
-        }
-        20% {
-          transform: translate(-2px, 2px);
-        }
-        40% {
-          transform: translate(-2px, -2px);
-        }
-        60% {
-          transform: translate(2px, 2px);
-        }
-        80% {
-          transform: translate(2px, -2px);
-        }
-      }
-
-      /* Back to Top Button */
-      #backToTop {
+      /* Grain overlay */
+      body::before {
+        content: "";
         position: fixed;
-        bottom: 30px;
-        right: 30px;
-        z-index: 999;
-        width: 60px;
-        height: 60px;
-        background: #121212;
-        border: 4px solid #121212;
-        cursor: pointer;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: var(--bg);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ============================================
+         NAVIGATION
+         ============================================ */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: opacity 0.4s ease, transform 0.4s var(--bezier-out);
+      }
+
+      .nav.nav-hidden {
         opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 5px 5px 0px 0px #121212;
+        transform: translateY(-100%);
+        pointer-events: none;
       }
 
-      #backToTop.show {
-        opacity: 1;
-        visibility: visible;
+      .nav-logo {
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink);
+        transition: color 0.4s ease;
       }
 
-      #backToTop:hover {
-        background: #ffde59;
-        transform: translateY(-3px);
-        box-shadow: 8px 8px 0px 0px #121212;
+      .nav.nav-dark .nav-logo {
+        color: var(--bg);
       }
 
-      #backToTop:active {
-        transform: translate(3px, 3px);
-        box-shadow: 2px 2px 0px 0px #121212;
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
       }
 
-      @keyframes bounce-up {
+      .nav-links a {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink);
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.4s ease;
+      }
+
+      .nav.nav-dark .nav-links a {
+        color: var(--bg);
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--ink);
+        transition: width 0.4s var(--bezier-out), background 0.4s ease;
+      }
+
+      .nav.nav-dark .nav-links a::after {
+        background: var(--bg);
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* ============================================
+         HERO — EDITORIAL SPLIT
+         ============================================ */
+      .hero {
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 clamp(32px, 5vw, 80px);
+        padding-bottom: clamp(48px, 8vh, 100px);
+        position: relative;
+      }
+
+      .hero-left::before {
+        content: "";
+        position: absolute;
+        top: 15%;
+        right: -60px;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          var(--accent-soft) 0%,
+          transparent 70%
+        );
+        opacity: 0.08;
+        filter: blur(60px);
+        pointer-events: none;
+      }
+
+      .hero-overline {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealUp 0.8s var(--bezier-out) 0.3s forwards;
+      }
+
+      .hero-name {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: clamp(48px, 7vw, 110px);
+        line-height: 0.92;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+        margin-bottom: 28px;
+        opacity: 0;
+        transform: translateY(40px);
+        animation: revealUp 1s var(--bezier-out) 0.5s forwards;
+      }
+
+      .hero-name .accent-dot {
+        color: var(--accent);
+      }
+
+      .hero-tagline {
+        font-size: clamp(16px, 1.4vw, 22px);
+        font-weight: 300;
+        line-height: 1.5;
+        color: var(--ink-soft);
+        max-width: 440px;
+        margin-bottom: 40px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealUp 0.8s var(--bezier-out) 0.7s forwards;
+      }
+
+      .hero-tagline em {
+        font-style: italic;
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 600;
+        font-size: 1.15em;
+        color: var(--accent);
+      }
+
+      .hero-cta-row {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealUp 0.8s var(--bezier-out) 0.9s forwards;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--ink);
+        padding: 16px 32px;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.4s var(--bezier-out);
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--accent);
+        transform: translateX(-101%);
+        transition: transform 0.5s var(--bezier-out);
+      }
+
+      .btn-primary:hover::before {
+        transform: translateX(0);
+      }
+
+      .btn-primary:hover {
+        transform: scale(1.02);
+      }
+
+      .btn-primary span {
+        position: relative;
+        z-index: 1;
+      }
+
+      .btn-primary .btn-arrow {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.4s var(--bezier-out);
+        font-size: 16px;
+      }
+
+      .btn-primary:hover .btn-arrow {
+        transform: translateX(4px);
+      }
+
+      .btn-ghost {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 3px;
+        transition:
+          color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .btn-ghost:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      /* Hero Right — Status Panel */
+      .hero-right {
+        background: var(--bg-warm);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: clamp(32px, 4vw, 64px);
+        padding-bottom: clamp(48px, 8vh, 100px);
+        position: relative;
+        border-left: 1px solid var(--rule);
+      }
+
+      .hero-right::after {
+        content: "";
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px rgba(132, 177, 121, 0.15);
+        animation: pulse-dot 2.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse-dot {
         0%,
         100% {
-          transform: translateY(0);
+          box-shadow: 0 0 0 4px rgba(132, 177, 121, 0.15);
         }
         50% {
-          transform: translateY(-10px);
+          box-shadow: 0 0 0 10px rgba(132, 177, 121, 0);
         }
       }
 
-      #backToTop:hover svg {
-        animation: bounce-up 0.6s ease infinite;
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 40px;
+        opacity: 0;
+        animation: fadeIn 0.6s ease 1s forwards;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .role-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealUp 0.8s var(--bezier-out) 1.1s forwards;
+      }
+
+      .role-entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 16px 0;
+        border-top: 1px solid var(--rule);
+        transition: padding-left 0.4s var(--bezier-out);
+      }
+
+      .role-entry:hover {
+        padding-left: 8px;
+      }
+
+      .role-entry:last-child {
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .role-label {
+        font-size: clamp(13px, 1.1vw, 16px);
+        font-weight: 400;
+        color: var(--ink-soft);
+      }
+
+      .role-place {
+        font-size: clamp(13px, 1.1vw, 16px);
+        font-weight: 600;
+        color: var(--ink);
+        text-align: right;
+      }
+
+      .role-place.solo {
+        color: var(--accent);
+      }
+
+      .hero-location {
+        margin-top: 32px;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: var(--ink-muted);
+        opacity: 0;
+        animation: fadeIn 0.6s ease 1.3s forwards;
+      }
+
+      .hero-location span {
+        font-weight: 600;
+        color: var(--ink-soft);
+      }
+
+      /* ============================================
+         SECTION COMMON
+         ============================================ */
+      .section {
+        padding: clamp(64px, 10vh, 140px) clamp(24px, 5vw, 80px);
+        position: relative;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: clamp(40px, 6vh, 80px);
+      }
+
+      .section-number {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 400;
+        font-size: clamp(14px, 1.2vw, 18px);
+        color: var(--accent);
+        letter-spacing: 0.05em;
+      }
+
+      .section-title {
+        font-size: clamp(10px, 0.85vw, 13px);
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+      }
+
+      .section-rule {
+        flex: 1;
+        height: 1px;
+        background: var(--rule);
+      }
+
+      /* ============================================
+         EXPERIENCE
+         ============================================ */
+      .experience {
+        background: var(--surface);
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .exp-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .exp-item {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: clamp(24px, 4vw, 64px);
+        padding: clamp(28px, 4vh, 48px) 0;
+        border-bottom: 1px solid var(--rule);
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s var(--bezier-out),
+          transform 0.7s var(--bezier-out);
+      }
+
+      .exp-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .exp-item:last-child {
+        border-bottom: none;
+      }
+
+      .exp-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .exp-date {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+      }
+
+      .exp-company {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--accent);
+        margin-top: 2px;
+      }
+
+      .exp-type {
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--ink-muted);
+        letter-spacing: 0.04em;
+      }
+
+      .exp-body h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 600;
+        font-size: clamp(22px, 2vw, 32px);
+        line-height: 1.2;
+        margin-bottom: 14px;
+        color: var(--ink);
+      }
+
+      .exp-points {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .exp-points li {
+        font-size: clamp(13px, 0.95vw, 15px);
+        line-height: 1.55;
+        color: var(--ink-soft);
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .exp-points li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        width: 6px;
+        height: 1px;
+        background: var(--accent);
+      }
+
+      /* ============================================
+         PROJECTS — 3-COLUMN SCROLL FOLIO
+         ============================================ */
+
+      .projects-scroll {
+        position: relative;
+        /* height set by JS */
+      }
+
+      .projects-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+        background: #243d1e;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Section label bar */
+      .projects-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px clamp(24px, 4vw, 56px);
+        border-bottom: 1px solid rgba(244, 248, 240, 0.06);
+        flex-shrink: 0;
+      }
+
+      .projects-topbar .section-header {
+        margin-bottom: 0;
+      }
+
+      .projects-topbar .section-number {
+        color: var(--accent-soft);
+      }
+
+      .projects-topbar .section-title {
+        color: rgba(244, 248, 240, 0.4);
+      }
+
+      .projects-topbar .section-rule {
+        background: rgba(244, 248, 240, 0.08);
+      }
+
+      .projects-counter-top {
+        font-family: "Outfit", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        color: rgba(244, 248, 240, 0.3);
+      }
+
+      .projects-counter-top .ct-active {
+        color: var(--accent-soft);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      /* 3-column layout — center narrow, right wide */
+      .projects-columns {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 200px minmax(180px, 0.6fr) 1fr;
+        min-height: 0;
+      }
+
+      /* === LEFT COLUMN: Thumbnail filmstrip === */
+      .folio-strip {
+        border-right: 1px solid rgba(244, 248, 240, 0.06);
+        display: flex;
+        flex-direction: column;
+        padding: clamp(20px, 3vh, 40px) clamp(16px, 2vw, 32px);
+        gap: 12px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Vertical progress line */
+      .folio-strip::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: rgba(244, 248, 240, 0.04);
+      }
+
+      .folio-strip-progress {
+        position: absolute;
+        left: 10px;
+        top: 0;
+        width: 2px;
+        height: 0%;
+        background: var(--accent);
+        transition: height 0.4s var(--bezier-out);
+      }
+
+      .folio-thumb {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        opacity: 0.35;
+        transform: scale(0.92);
+        transition:
+          opacity 0.5s var(--bezier-out),
+          transform 0.5s var(--bezier-out),
+          border-color 0.4s ease;
+        flex-shrink: 0;
+      }
+
+      .folio-thumb.active {
+        opacity: 1;
+        transform: scale(1);
+        border-color: var(--accent);
+      }
+
+      .folio-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: grayscale(0.6);
+        transition: filter 0.5s ease;
+      }
+
+      .folio-thumb.active img {
+        filter: grayscale(0);
+      }
+
+      /* Thumb number badge */
+      .folio-thumb-num {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: 11px;
+        color: rgba(244, 248, 240, 0.7);
+        background: rgba(30, 43, 26, 0.7);
+        padding: 1px 6px;
+        letter-spacing: 0.05em;
+        line-height: 1.4;
+      }
+
+      /* === CENTER COLUMN: Project info === */
+      .folio-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: clamp(16px, 2vw, 32px);
+        position: relative;
+        border-right: 1px solid rgba(244, 248, 240, 0.06);
+        text-align: center;
+      }
+
+      /* All project infos stacked, only active visible */
+      .folio-info {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: clamp(16px, 2vw, 32px);
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.6s var(--bezier-out),
+          transform 0.6s var(--bezier-out);
+        pointer-events: none;
+      }
+
+      .folio-info.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .folio-info.exiting {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      .folio-num {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 300;
+        font-size: clamp(40px, 5vw, 72px);
+        line-height: 0.85;
+        color: rgba(244, 248, 240, 0.06);
+        letter-spacing: -0.04em;
+        margin-bottom: 16px;
+      }
+
+      .folio-name {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: clamp(20px, 2vw, 32px);
+        line-height: 1.12;
+        color: var(--bg);
+        margin-bottom: 12px;
+      }
+
+      .folio-url {
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: rgba(244, 248, 240, 0.35);
+        margin-bottom: 24px;
+      }
+
+      .folio-visit {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent-soft);
+        padding: 12px 24px;
+        border: 1px solid rgba(132, 177, 121, 0.3);
+        transition:
+          background 0.4s ease,
+          color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .folio-visit:hover {
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+      }
+
+      .folio-visit-arrow {
+        font-size: 14px;
+        transition: transform 0.4s var(--bezier-out);
+      }
+
+      .folio-visit:hover .folio-visit-arrow {
+        transform: translate(3px, -3px);
+      }
+
+      /* === RIGHT COLUMN: Large image === */
+      .folio-showcase {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1a2717;
+        padding: clamp(16px, 3vh, 32px) clamp(16px, 2vw, 32px);
+      }
+
+      .folio-large-img {
+        position: absolute;
+        inset: clamp(16px, 3vh, 32px) clamp(16px, 2vw, 32px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(1.04);
+        transition:
+          opacity 0.7s var(--bezier-out),
+          transform 0.7s var(--bezier-out);
+      }
+
+      .folio-large-img.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .folio-large-img.exiting {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+
+      .folio-large-img img,
+      .folio-large-img video {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        box-shadow:
+          0 8px 40px rgba(0, 0, 0, 0.3),
+          0 2px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Hide all video controls and overlays */
+      .folio-large-img video::-webkit-media-controls {
+        display: none !important;
+      }
+
+      .folio-large-img video::-webkit-media-controls-enclosure {
+        display: none !important;
+      }
+
+      /* Bottom progress bar */
+      .projects-progress-track {
+        width: 100%;
+        height: 3px;
+        background: rgba(244, 248, 240, 0.04);
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .projects-progress-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: var(--accent);
+        transition: width 0.15s linear;
+      }
+
+      /* ============================================
+         CONTACT / FOOTER
+         ============================================ */
+      .contact {
+        background: var(--ink);
+        color: var(--bg);
+        padding: clamp(64px, 10vh, 140px) clamp(24px, 5vw, 80px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact::before {
+        content: "";
+        position: absolute;
+        bottom: -100px;
+        right: -100px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        opacity: 0.06;
+        filter: blur(80px);
+        pointer-events: none;
+      }
+
+      .contact-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(40px, 6vw, 100px);
+        align-items: end;
+      }
+
+      .contact-heading {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: clamp(36px, 5vw, 72px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .contact-heading .accent-dot {
+        color: var(--accent);
+      }
+
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .contact-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+        border-top: 1px solid rgba(244, 248, 240, 0.1);
+        transition: padding-left 0.4s var(--bezier-out);
+      }
+
+      .contact-row:last-child {
+        border-bottom: 1px solid rgba(244, 248, 240, 0.1);
+      }
+
+      .contact-row:hover {
+        padding-left: 12px;
+      }
+
+      .contact-row-label {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(244, 248, 240, 0.4);
+      }
+
+      .contact-row-value {
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--bg);
+        transition: color 0.3s ease;
+      }
+
+      .contact-row:hover .contact-row-value {
+        color: var(--accent-soft);
+      }
+
+      /* Footer bar */
+      .footer-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px clamp(24px, 5vw, 80px);
+        background: var(--ink);
+        border-top: 1px solid rgba(244, 248, 240, 0.06);
+      }
+
+      .footer-copy {
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: rgba(244, 248, 240, 0.3);
+      }
+
+      .footer-back-top {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(244, 248, 240, 0.3);
+        cursor: pointer;
+        transition: color 0.3s ease;
+        background: none;
+        border: none;
+        font-family: "Outfit", sans-serif;
+      }
+
+      .footer-back-top:hover {
+        color: var(--accent-soft);
+      }
+
+      /* ============================================
+         ANIMATIONS
+         ============================================ */
+      @keyframes revealUp {
+        from {
+          opacity: 0;
+          transform: translateY(var(--reveal-y, 30px));
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideRule {
+        from {
+          transform: scaleX(0);
+        }
+        to {
+          transform: scaleX(1);
+        }
+      }
+
+      /* ============================================
+         SCROLL PROGRESS BAR
+         ============================================ */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        background: var(--accent);
+        width: 0%;
+        z-index: 200;
+        transition: width 0.1s linear;
+      }
+
+      /* ============================================
+         RESPONSIVE
+         ============================================ */
+      @media (max-width: 900px) {
+        .nav {
+          padding: 16px 20px;
+        }
+
+        .nav-links {
+          gap: 20px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+
+        .hero-left {
+          padding: 120px 24px 48px;
+        }
+
+        .hero-right {
+          border-left: none;
+          border-top: 1px solid var(--rule);
+          padding: 40px 24px 48px;
+        }
+
+        .hero-right::after {
+          top: 24px;
+          right: 24px;
+        }
+
+        .exp-item {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .projects-columns {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
+        }
+
+        .folio-strip {
+          display: none;
+        }
+
+        .folio-center {
+          border-right: none;
+          border-bottom: 1px solid rgba(244, 248, 240, 0.06);
+          padding: 24px;
+          min-height: 220px;
+        }
+
+        .folio-info {
+          padding: 24px;
+        }
+
+        .folio-num {
+          font-size: clamp(40px, 14vw, 64px);
+        }
+
+        .folio-name {
+          font-size: clamp(22px, 6vw, 36px);
+        }
+
+        .folio-showcase {
+          min-height: 280px;
+        }
+
+        .contact-inner {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .section {
+          padding: 48px 24px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero-name {
+          font-size: clamp(40px, 12vw, 64px);
+        }
+
+        .hero-cta-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+
+        .contact-heading {
+          font-size: clamp(32px, 10vw, 48px);
+        }
       }
     </style>
   </head>
-  <body
-    class="bg-neo-white text-neo-black font-sans selection:bg-black selection:text-white relative"
-  >
-    <!-- Background Grid -->
-    <div class="fixed inset-0 retro-grid pointer-events-none z-0"></div>
+
+  <body>
+    <!-- Scroll progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- Navigation -->
-    <nav
-      class="fixed top-0 left-0 w-full z-50 bg-neo-white border-b-4 border-neo-black p-4"
-    >
-      <div class="max-w-7xl mx-auto flex justify-between items-center px-4">
-        <a
-          href="#"
-          class="font-black text-2xl tracking-tighter uppercase hover:text-neo-pink transition-colors"
-        >
-          <span class="bg-neo-black text-neo-white px-2 py-1 mr-1">ZANDER</span
-          >_TRUONG
-        </a>
-
-        <div class="hidden md:flex items-center gap-8 font-bold font-mono">
-          <a
-            href="#about"
-            class="hover:underline decoration-4 decoration-neo-purple underline-offset-4"
-            >WHO_AM_I?</a
-          >
-          <a
-            href="#skills"
-            class="hover:underline decoration-4 decoration-neo-green underline-offset-4"
-            >STACK</a
-          >
-          <a
-            href="#projects"
-            class="hover:underline decoration-4 decoration-neo-blue underline-offset-4"
-            >PROJECTS</a
-          >
-          <a
-            href="#contact"
-            class="bg-neo-black text-white px-4 py-2 hover:bg-neo-yellow hover:text-black transition-all border-2 border-transparent hover:border-black shadow-none hover:shadow-hard-sm transform hover:-translate-y-1"
-            >HIRE ME</a
-          >
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <button
-          onclick="toggleMenu()"
-          class="md:hidden border-2 border-neo-black p-1 hover:bg-neo-yellow shadow-hard-sm active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="square"
-              stroke-linejoin="miter"
-              stroke-width="3"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
+    <nav class="nav">
+      <div class="nav-logo">TMT</div>
+      <ul class="nav-links">
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
-    <div
-      id="mobile-menu"
-      class="fixed inset-0 bg-neo-white z-40 transform translate-x-full transition-transform duration-300 border-l-4 border-neo-black flex flex-col justify-center items-center gap-8 font-black text-3xl"
-    >
-      <button
-        onclick="toggleMenu()"
-        class="absolute top-6 right-6 border-2 border-neo-black p-2 hover:bg-neo-pink"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-8 w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="square"
-            stroke-linejoin="miter"
-            stroke-width="3"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
-      <a href="#about" onclick="toggleMenu()" class="hover:bg-neo-purple px-4"
-        >ABOUT</a
-      >
-      <a href="#skills" onclick="toggleMenu()" class="hover:bg-neo-green px-4"
-        >SKILLS</a
-      >
-      <a href="#projects" onclick="toggleMenu()" class="hover:bg-neo-blue px-4"
-        >PROJECTS</a
-      >
-      <a
-        href="#contact"
-        onclick="toggleMenu()"
-        class="bg-neo-black text-white px-6 py-2"
-        >CONTACT</a
-      >
-    </div>
-
-    <!-- Hero Section -->
-    <header
-      class="min-h-screen pt-24 flex flex-col justify-center items-center relative overflow-hidden px-4"
-    >
-      <div
-        class="max-w-7xl w-full z-10 flex flex-col lg:flex-row items-center gap-8"
-      >
-        <div class="flex-1">
-          <div
-            class="inline-block border-2 border-neo-black bg-neo-yellow px-4 py-2 font-mono font-bold text-sm mb-6 shadow-hard-sm transform -rotate-2"
-            data-aos="fade-down"
-            data-aos-duration="600"
-          >
-            HELLO_WORLD.INIT()
-          </div>
-
-          <h1
-            class="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] mb-8 tracking-tighter"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
-            I BUILD <br />
-            <span
-              class="text-transparent bg-clip-text bg-gradient-to-r from-neo-purple to-neo-blue"
-              style="-webkit-text-stroke: 3px #121212"
-              >SYSTEMS</span
-            >
-            & <br />
-            BREAK
-            <span
-              class="text-neo-pink underline decoration-4 underline-offset-8"
-              >CODE</span
-            >
-          </h1>
-
-          <div
-            class="max-w-2xl bg-white border-4 border-neo-black p-6 shadow-hard mb-10"
-            data-aos="zoom-in"
-            data-aos-duration="600"
-            data-aos-delay="400"
-          >
-            <p class="font-mono text-lg md:text-xl">
-              Fresh Graduate Software Engineer specializing in
-              JavaScript/Next.js Full Stack development. I build robust backends
-              and modern frontends.
-            </p>
-          </div>
-
-          <div
-            class="flex flex-col md:flex-row gap-4"
-            data-aos="fade-up"
-            data-aos-delay="600"
-          >
-            <a
-              href="#projects"
-              class="group relative px-8 py-4 bg-neo-black text-white font-bold text-xl border-2 border-neo-black hover:bg-white hover:text-black transition-all shadow-hard hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px]"
-            >
-              VIEW PROJECTS
-              <span
-                class="absolute top-0 right-0 -mt-2 -mr-2 h-4 w-4 bg-neo-pink rounded-full border-2 border-black hidden group-hover:block"
-              ></span>
-            </a>
-            <a
-              href="cv/CV Trương Minh Tiến.pdf"
-              target="_blank"
-              class="px-8 py-4 bg-neo-white text-black font-bold text-xl border-2 border-neo-black hover:bg-neo-blue transition-all shadow-hard hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px]"
-            >
-              DOWNLOAD CV
-            </a>
-          </div>
-        </div>
-
-        <!-- Code Terminal Block -->
-        <div
-          class="hidden lg:block flex-shrink-0 w-96"
-          data-aos="fade-left"
-          data-aos-duration="800"
-          data-aos-delay="300"
-        >
-          <div class="bg-neo-black border-4 border-neo-black shadow-hard-xl">
-            <!-- Terminal Header -->
-            <div
-              class="flex items-center gap-2 px-4 py-2 bg-gray-800 border-b-2 border-gray-700"
-            >
-              <div class="w-3 h-3 rounded-full bg-neo-pink"></div>
-              <div class="w-3 h-3 rounded-full bg-neo-yellow"></div>
-              <div class="w-3 h-3 rounded-full bg-neo-green"></div>
-              <span class="ml-2 text-gray-400 font-mono text-sm"
-                >zander@dev ~</span
-              >
-            </div>
-            <!-- Terminal Content -->
-            <div class="p-4 font-mono text-sm text-neo-green leading-relaxed">
-              <p class="text-gray-500">// Developer.js</p>
-              <p class="mt-2">
-                <span class="text-neo-purple">public class</span>
-                <span class="text-neo-yellow">Developer</span> {
-              </p>
-              <p class="ml-4">
-                <span class="text-neo-purple">String</span> name =
-                <span class="text-neo-pink">"Zander"</span>;
-              </p>
-              <p class="ml-4">
-                <span class="text-neo-purple">String</span> role =
-                <span class="text-neo-pink">"Full Stack"</span>;
-              </p>
-              <p class="ml-4">
-                <span class="text-neo-purple">String[]</span> skills = {
-              </p>
-              <p class="ml-8">
-                <span class="text-neo-pink">"JavaScript"</span>,
-                <span class="text-neo-pink">"Next.js"</span>,
-              </p>
-              <p class="ml-8">
-                <span class="text-neo-pink">"React"</span>,
-                <span class="text-neo-pink">"Next.js"</span>,
-              </p>
-              <p class="ml-8">
-                <span class="text-neo-pink">"Vue"</span>,
-                <span class="text-neo-pink">"TypeScript"</span>
-              </p>
-              <p class="ml-4">};</p>
-              <p class="mt-2 ml-4">
-                <span class="text-neo-purple">boolean</span> isHireable =
-                <span class="text-neo-blue">true</span>;
-              </p>
-              <p>}</p>
-              <p class="mt-3 text-white">
-                <span class="text-neo-green">▶</span> Running...<span
-                  class="animate-pulse"
-                  >_</span
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Decorative Elements -->
-      <div
-        class="absolute right-10 top-1/3 w-32 h-32 bg-neo-green border-4 border-black rounded-full mix-blend-multiply opacity-80 hidden lg:block"
-        data-aos="zoom-in"
-        data-aos-duration="1000"
-        data-aos-delay="800"
-      ></div>
-      <div
-        class="absolute left-10 bottom-20 w-24 h-24 bg-neo-purple border-4 border-black transform rotate-12 hidden lg:block"
-        data-aos="zoom-in"
-        data-aos-duration="1000"
-        data-aos-delay="1000"
-      ></div>
-    </header>
-
-    <!-- Marquee -->
-    <div
-      class="w-full bg-neo-black text-neo-white py-4 border-y-4 border-neo-black overflow-hidden font-mono font-bold text-2xl md:text-3xl whitespace-nowrap z-20 relative"
-    >
-      <div class="animate-marquee">
-        <span
-          >OPEN TO WORK /// JAVASCRIPT FULL STACK /// NEXT.JS /// REACT /// VUE
-          /// TYPESCRIPT /// SQL /// REST API /// OPEN TO WORK /// JAVASCRIPT
-          FULL STACK /// NEXT.JS /// REACT /// VUE /// TYPESCRIPT /// SQL ///
-          REST API ///</span
-        >
-      </div>
-    </div>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 px-4 max-w-7xl mx-auto z-10 relative">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <!-- Image/Avatar Placeholder -->
-        <div class="relative" data-aos="fade-right" data-aos-duration="800">
-          <div
-            class="aspect-square bg-neo-purple border-4 border-neo-black shadow-hard-xl overflow-hidden relative"
-          >
-            <!-- Replace src with your image -->
-            <img
-              src="image/zander.jpg"
-              alt="Profile"
-              class="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500"
-            />
-            <div
-              class="absolute bottom-0 left-0 w-full bg-neo-black text-white p-2 font-mono text-center"
-            >
-              STATUS: READY_TO_DEPLOY
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-6">
-          <h2
-            class="text-5xl md:text-6xl font-black bg-neo-yellow inline-block border-4 border-neo-black px-4 py-2 shadow-hard-sm transform -rotate-1 w-fit"
-            data-aos="fade-left"
-            data-aos-duration="600"
-          >
-            WHO AM I?
-          </h2>
-          <div
-            class="bg-white border-4 border-neo-black p-6 md:p-8 shadow-hard"
-            data-aos="fade-left"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
-            <p class="font-mono text-lg mb-4">
-              <span class="bg-neo-black text-white px-1">Degree:</span> B.S.
-              Software Engineering
-            </p>
-            <p class="text-xl leading-relaxed mb-6">
-              I bridge the gap between complex backend logic and intuitive user
-              interfaces.
-              <br /><br />
-              As a fresh graduate, I specialize in the JavaScript ecosystem
-              (Next.js, Node.js) paired with modern frontend frameworks like
-              React, and Vue. I love building scalable systems from the database
-              up to the pixel.
-            </p>
-            <div class="flex flex-wrap gap-4 font-bold">
-              <div
-                class="flex items-center gap-2 border-2 border-black px-3 py-1 bg-neo-green rounded-full"
-                data-aos="fade-up"
-                data-aos-delay="400"
-              >
-                <div class="w-3 h-3 bg-black rounded-full"></div>
-                Problem Solver
-              </div>
-              <div
-                class="flex items-center gap-2 border-2 border-black px-3 py-1 bg-neo-pink rounded-full"
-                data-aos="fade-up"
-                data-aos-delay="500"
-              >
-                <div class="w-3 h-3 bg-black rounded-full"></div>
-                Detail Oriented
-              </div>
-              <div
-                class="flex items-center gap-2 border-2 border-black px-3 py-1 bg-neo-blue rounded-full"
-                data-aos="fade-up"
-                data-aos-delay="600"
-              >
-                <div class="w-3 h-3 bg-black rounded-full"></div>
-                Fast Learner
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section
-      id="skills"
-      class="py-20 bg-white border-y-4 border-neo-black relative z-10"
-    >
-      <div class="max-w-7xl mx-auto px-4">
-        <h2
-          class="text-5xl md:text-7xl font-black text-center mb-16 uppercase tracking-tighter"
-          data-aos="zoom-in"
-          data-aos-duration="800"
-        >
-          My
-          <span
-            class="text-stroke-3 text-transparent bg-clip-text bg-neo-black"
-            style="-webkit-text-stroke: 2px black; color: transparent"
-            >Arsenal</span
-          >
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <!-- Development Skills -->
-          <div
-            class="border-4 border-neo-black p-6 bg-neo-white shadow-hard hover:shadow-hard-xl transition-all"
-            data-aos="fade-right"
-            data-aos-duration="800"
-          >
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-8 h-8 bg-neo-blue border-2 border-black"></div>
-              <h3 class="text-3xl font-bold">DEVELOPMENT</h3>
-            </div>
-            <div class="flex flex-wrap gap-3 font-mono font-bold">
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="0"
-                >JavaScript (Next.js/Node.js)</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="50"
-                >React.js</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="100"
-                >Vue.js</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="150"
-                >TypeScript</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="200"
-                >Hibernate / JPA</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="250"
-                >SQL (MySQL / MS SQL)</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="300"
-                >Tailwind CSS</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="350"
-                >Git/GitHub</span
-              >
-            </div>
-          </div>
-
-          <!-- Tools & Others Skills -->
-          <div
-            class="border-4 border-neo-black p-6 bg-neo-white shadow-hard hover:shadow-hard-xl transition-all"
-            data-aos="fade-left"
-            data-aos-duration="800"
-          >
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-8 h-8 bg-neo-pink border-2 border-black"></div>
-              <h3 class="text-3xl font-bold">TOOLS & OTHERS</h3>
-            </div>
-            <div class="flex flex-wrap gap-3 font-mono font-bold">
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="0"
-                >Docker</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="50"
-                >Maven / Gradle</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="100"
-                >Postman (API)</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="150"
-                >Figma</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="200"
-                >VS Code</span
-              >
-              <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                data-aos="zoom-in"
-                data-aos-delay="250"
-                >Cursor</span
-              >
-              <!-- <span
-                class="px-4 py-2 border-2 border-black bg-white hover:bg-neo-black hover:text-white transition-colors cursor-default"
-                >CI/CD Pipelines</span
-              > -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-24 px-4 max-w-7xl mx-auto z-10 relative">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-16">
-        <h2
-          class="text-6xl md:text-8xl font-black uppercase leading-none"
-          data-aos="fade-right"
-          data-aos-duration="800"
-        >
-          Featured<br /><span class="text-neo-purple">Work</span>
-        </h2>
-        <p
-          class="font-mono font-bold text-xl mt-4 md:mt-0 border-b-4 border-neo-black pb-1"
-          data-aos="fade-left"
-          data-aos-duration="800"
-        >
-          // CHECK_MY_REPO
+    <!-- Hero — Editorial Split -->
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <div class="hero-overline">Web Developer &amp; Builder</div>
+        <h1 class="hero-name">
+          Trương<br />Minh Tiến<span class="accent-dot">.</span>
+        </h1>
+        <p class="hero-tagline">
+          I build things for the web &amp; figure out the <em>rest</em> along
+          the way.
         </p>
+        <div class="hero-cta-row">
+          <a href="mailto:tientm05@gmail.com" class="btn-primary">
+            <span>Get in Touch</span>
+            <span class="btn-arrow">→</span>
+          </a>
+          <a
+            href="https://github.com/tientruong05"
+            target="_blank"
+            rel="noopener"
+            class="btn-ghost"
+            >View GitHub</a
+          >
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Project Card 1 -->
-        <article
-          class="bg-white border-4 border-neo-black shadow-hard flex flex-col group h-full"
-          data-aos="flip-left"
-          data-aos-duration="800"
-        >
-          <div
-            class="h-48 bg-neo-black border-b-4 border-neo-black relative overflow-hidden"
-          >
-            <!-- Icon or Project Preview -->
-            <img
-              src="image/FSGHackathonTAL.jpg"
-              alt="Mental Health Support Platform"
-              class="w-full h-full object-cover"
-            />
-            <div
-              class="absolute top-2 right-2 bg-neo-yellow text-black text-xs font-bold px-2 py-1 border border-black"
-            >
-              HEALTHCARE
-            </div>
-          </div>
-          <div class="p-6 flex-grow flex flex-col">
-            <h3
-              class="text-2xl font-black mb-2 uppercase group-hover:underline decoration-4 decoration-neo-green"
-            >
-              Mental Health Support Platform
-            </h3>
-            <p class="font-mono text-sm mb-4 text-gray-700">
-              An innovative online platform connecting users with mental health
-              professionals, featuring a 24/7 AI-powered chatbot and
-              comprehensive educational resources. Awarded Second Prize at
-              Hackathon 2025: Touch A Life, organized by FPT University Quy
-              Nhon.
-            </p>
-            <div
-              class="mt-auto pt-4 border-t-2 border-black border-dashed flex gap-2"
-            >
-              <a
-                href="https://github.com/tientruong05/FSG-HackathonTAL"
-                target="_blank"
-                class="flex-1 text-center py-2 font-bold border-2 border-black hover:bg-neo-black hover:text-white transition-colors"
-                >GITHUB</a
-              >
-              <a
-                href="https://www.figma.com/community/file/1484467306083107963/psychological-treatment"
-                target="_blank"
-                class="flex-1 text-center py-2 font-bold bg-neo-green border-2 border-black hover:bg-neo-black hover:text-white transition-colors"
-                >FIGMA</a
-              >
-            </div>
-          </div>
-        </article>
-
-        <!-- Project Card 2 - Placeholder -->
-        <article
-          class="bg-white border-4 border-neo-black shadow-hard flex flex-col group h-full opacity-60"
-          data-aos="flip-left"
-          data-aos-duration="800"
-          data-aos-delay="200"
-        >
-          <div
-            class="h-48 bg-neo-black border-b-4 border-neo-black relative overflow-hidden"
-          >
-            <div
-              class="absolute inset-0 flex items-center justify-center text-neo-pink"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-24 w-24"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="square"
-                  stroke-linejoin="miter"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </div>
-            <div
-              class="absolute top-2 right-2 bg-gray-400 text-black text-xs font-bold px-2 py-1 border border-black"
-            >
-              COMING SOON
-            </div>
-          </div>
-          <div class="p-6 flex-grow flex flex-col">
-            <h3
-              class="text-2xl font-black mb-2 uppercase group-hover:underline decoration-4 decoration-neo-pink"
-            >
-              Project Title
-            </h3>
-            <p class="font-mono text-sm mb-4 text-gray-500">
-              Project description will be updated soon. Stay tuned for more
-              exciting work!
-            </p>
-            <div
-              class="mt-auto pt-4 border-t-2 border-black border-dashed flex gap-2"
-            >
-              <span
-                class="flex-1 text-center py-2 font-bold border-2 border-gray-400 text-gray-400 cursor-not-allowed"
-                >GITHUB</span
-              >
-              <span
-                class="flex-1 text-center py-2 font-bold bg-gray-300 border-2 border-gray-400 text-gray-500 cursor-not-allowed"
-                >FIGMA</span
-              >
-            </div>
-          </div>
-        </article>
-
-        <!-- Project Card 3 - Placeholder -->
-        <article
-          class="bg-white border-4 border-neo-black shadow-hard flex flex-col group h-full opacity-60"
-          data-aos="flip-left"
-          data-aos-duration="800"
-          data-aos-delay="400"
-        >
-          <div
-            class="h-48 bg-neo-black border-b-4 border-neo-black relative overflow-hidden"
-          >
-            <div
-              class="absolute inset-0 flex items-center justify-center text-neo-blue"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-24 w-24"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="square"
-                  stroke-linejoin="miter"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </div>
-            <div
-              class="absolute top-2 right-2 bg-gray-400 text-black text-xs font-bold px-2 py-1 border border-black"
-            >
-              COMING SOON
-            </div>
-          </div>
-          <div class="p-6 flex-grow flex flex-col">
-            <h3
-              class="text-2xl font-black mb-2 uppercase group-hover:underline decoration-4 decoration-neo-blue"
-            >
-              Project Title
-            </h3>
-            <p class="font-mono text-sm mb-4 text-gray-500">
-              Project description will be updated soon. Stay tuned for more
-              exciting work!
-            </p>
-            <div
-              class="mt-auto pt-4 border-t-2 border-black border-dashed flex gap-2"
-            >
-              <span
-                class="flex-1 text-center py-2 font-bold border-2 border-gray-400 text-gray-400 cursor-not-allowed"
-                >GITHUB</span
-              >
-              <span
-                class="flex-1 text-center py-2 font-bold bg-gray-300 border-2 border-gray-400 text-gray-500 cursor-not-allowed"
-                >FIGMA</span
-              >
-            </div>
-          </div>
-        </article>
+      <div class="hero-right">
+        <div class="status-badge">Available for Work</div>
+        <ul class="role-list">
+          <li class="role-entry">
+            <span class="role-label">Freelance</span>
+            <span class="role-place solo">Web Developer</span>
+          </li>
+          <li class="role-entry">
+            <span class="role-label">Business Dev Intern</span>
+            <span class="role-place">TMN Homes</span>
+          </li>
+          <li class="role-entry">
+            <span class="role-label">Crew Member</span>
+            <span class="role-place">KFC</span>
+          </li>
+        </ul>
+        <div class="hero-location">
+          Based in <span>Quy Nhon, Gia Lai, Vietnam</span>
+        </div>
       </div>
     </section>
 
-    <!-- Contact Section -->
-    <section
-      id="contact"
-      class="py-20 relative border-t-4 border-neo-black bg-neo-yellow overflow-hidden"
-    >
-      <!-- Decorative Background Elements -->
-      <div
-        class="absolute top-10 left-10 w-20 h-20 bg-neo-pink border-4 border-black transform rotate-12 opacity-50 hidden md:block"
-      ></div>
-      <div
-        class="absolute bottom-10 right-10 w-16 h-16 bg-neo-blue border-4 border-black rounded-full opacity-50 hidden md:block"
-      ></div>
-      <div
-        class="absolute top-1/2 right-20 w-12 h-12 bg-neo-green border-4 border-black opacity-50 hidden lg:block"
-      ></div>
+    <!-- Experience -->
+    <section class="section experience" id="experience">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <span class="section-title">Experience</span>
+        <div class="section-rule"></div>
+      </div>
 
-      <div class="max-w-6xl mx-auto px-4">
-        <!-- Creative Header -->
-        <div class="text-center mb-16">
-          <div
-            class="inline-block bg-neo-black text-neo-yellow px-6 py-2 font-mono font-bold text-sm mb-6 border-4 border-neo-black shadow-hard-sm transform -rotate-1"
-            data-aos="zoom-in"
-            data-aos-duration="600"
-          >
-            CONNECTION.ESTABLISH()
+      <div class="exp-grid">
+        <div class="exp-item" data-reveal>
+          <div class="exp-meta">
+            <div class="exp-date">Mar 2026 — Present</div>
+            <div class="exp-company">TMN Homes</div>
+            <div class="exp-type">Internship</div>
           </div>
-          <h2
-            class="text-5xl md:text-7xl font-black uppercase mb-4"
-            data-aos="fade-up"
-            data-aos-duration="800"
-          >
-            Let's <span class="text-neo-pink">Connect</span>
-          </h2>
-          <p
-            class="font-mono text-lg font-bold max-w-2xl mx-auto"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            Have a project or a job opportunity? I'm currently looking for roles
-            in JavaScript Full Stack Development.
-          </p>
+          <div class="exp-body">
+            <h3>Business Development</h3>
+            <ul class="exp-points">
+              <li>Supporting business development operations</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <!-- Contact Info Cards -->
-          <div class="space-y-6">
-            <!-- Email Card -->
-            <div
-              class="bg-white border-4 border-neo-black p-6 shadow-hard hover:shadow-hard-xl transition-all transform hover:-translate-y-1 group"
-              data-aos="fade-up"
-              data-aos-duration="600"
-            >
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-16 h-16 bg-neo-pink border-4 border-black flex items-center justify-center group-hover:rotate-12 transition-transform"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-8 w-8"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="square"
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="font-black text-xl uppercase">Email Me</h3>
-                  <a
-                    href="mailto:tientm05@example.com"
-                    class="font-mono text-gray-700 hover:text-neo-pink transition-colors"
-                    >tientm05@gmail.com</a
-                  >
-                </div>
-              </div>
-            </div>
+        <div class="exp-item" data-reveal>
+          <div class="exp-meta">
+            <div class="exp-date">May — Jul 2025</div>
+            <div class="exp-company">FPT Software</div>
+            <div class="exp-type">Internship</div>
+          </div>
+          <div class="exp-body">
+            <h3>Website Developer</h3>
+            <ul class="exp-points">
+              <li>
+                Refactored &amp; redesigned main pages on a ReactJS-based
+                website for cleaner UI
+              </li>
+              <li>
+                Used Postman to test .NET APIs, ensuring correct frontend data
+                display
+              </li>
+              <li>
+                Spotted and fixed various UI bugs for smoother user experience
+              </li>
+              <li>Leveraged AI tools to speed up repetitive tasks</li>
+            </ul>
+          </div>
+        </div>
 
-            <!-- Location Card -->
-            <div
-              class="bg-white border-4 border-neo-black p-6 shadow-hard hover:shadow-hard-xl transition-all transform hover:-translate-y-1 group"
-              data-aos="fade-up"
-              data-aos-duration="600"
-              data-aos-delay="100"
-            >
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-16 h-16 bg-neo-blue border-4 border-black flex items-center justify-center group-hover:rotate-12 transition-transform"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-8 w-8"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="square"
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      stroke-linecap="square"
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="font-black text-xl uppercase">Location</h3>
-                  <p class="font-mono text-gray-700">Quy Nhon, Vietnam 🇻🇳</p>
-                </div>
-              </div>
-            </div>
+        <div class="exp-item" data-reveal>
+          <div class="exp-meta">
+            <div class="exp-date">Aug — Oct 2024</div>
+            <div class="exp-company">FPT Software</div>
+            <div class="exp-type">Internship</div>
+          </div>
+          <div class="exp-body">
+            <h3>Manual Tester</h3>
+            <ul class="exp-points">
+              <li>
+                Contributed to post-migration website testing (UI Testing
+                Project)
+              </li>
+              <li>
+                Analyzed user stories, JSON files &amp; Figma designs to
+                understand requirements
+              </li>
+              <li>
+                Executed tests based on detailed design specs to verify
+                functionality
+              </li>
+              <li>
+                Logged &amp; tracked bugs in Jira, fostering effective dev
+                communication
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <!-- Social Links Card -->
-            <div
-              class="bg-white border-4 border-neo-black p-6 shadow-hard hover:shadow-hard-xl transition-all"
-              data-aos="fade-up"
-              data-aos-duration="600"
-              data-aos-delay="200"
-            >
-              <h3 class="font-black text-xl uppercase mb-4">Find Me Online</h3>
-              <div class="flex gap-4">
-                <a
-                  href="https://github.com/tientruong05"
-                  target="_blank"
-                  class="w-14 h-14 bg-neo-black border-4 border-black flex items-center justify-center text-white hover:bg-neo-green hover:text-black transition-all transform hover:-translate-y-1 hover:rotate-3"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="square"
-                  >
-                    <path
-                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-                    ></path>
-                  </svg>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/tientruong05/"
-                  target="_blank"
-                  class="w-14 h-14 bg-neo-black border-4 border-black flex items-center justify-center text-white hover:bg-neo-blue hover:text-black transition-all transform hover:-translate-y-1 hover:rotate-3"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="square"
-                  >
-                    <path
-                      d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
-                    ></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-              </div>
-            </div>
+    <!-- Projects — 3-Column Scroll Folio -->
+    <div class="projects-scroll" id="projects">
+      <div class="projects-sticky">
+        <!-- Top bar -->
+        <div class="projects-topbar">
+          <div class="section-header">
+            <span class="section-number">02</span>
+            <span class="section-title">Selected Works</span>
+            <div class="section-rule"></div>
+          </div>
+          <div class="projects-counter-top">
+            <span class="ct-active" id="counterCurrent">01</span>
+            <span> / 03</span>
+          </div>
+        </div>
 
-            <!-- Fun Status -->
-            <div
-              class="bg-neo-black text-white border-4 border-neo-black p-4 font-mono text-sm"
-              data-aos="fade-up"
-              data-aos-duration="600"
-              data-aos-delay="300"
-            >
-              <p><span class="text-neo-green">$</span> current_status</p>
-              <p class="mt-2 text-neo-green">
-                → Available for hire <span class="animate-pulse">●</span>
-              </p>
-              <p class="text-neo-yellow">→ Response time: ~24h</p>
-              <p class="text-neo-pink">→ Coffee lover ☕</p>
+        <!-- 3 columns -->
+        <div class="projects-columns">
+          <!-- LEFT: Thumbnail filmstrip -->
+          <div class="folio-strip">
+            <div class="folio-strip-progress" id="stripProgress"></div>
+
+            <div class="folio-thumb active" data-thumb="0">
+              <img
+                src="image/ngongoay-paperfest.jpg"
+                alt="Ngọ Ngoạy PaperFest"
+              />
+              <span class="folio-thumb-num">01</span>
+            </div>
+            <div class="folio-thumb" data-thumb="1">
+              <img src="image/2stinkering.jpg" alt="2S Tinkering Shop" />
+              <span class="folio-thumb-num">02</span>
+            </div>
+            <div class="folio-thumb" data-thumb="2">
+              <img src="image/zander.jpg" alt="Tổ Tò Mò" />
+              <span class="folio-thumb-num">03</span>
             </div>
           </div>
 
-          <!-- Contact Form -->
-          <div
-            class="bg-white border-4 border-neo-black p-8 shadow-hard-xl"
-            data-aos="fade-left"
-            data-aos-duration="800"
+          <!-- CENTER: Project info -->
+          <div class="folio-center">
+            <div class="folio-info active" data-info="0">
+              <div class="folio-num">01</div>
+              <div class="folio-name">Ngọ Ngoạy PaperFest</div>
+              <div class="folio-url">ngongoay-paperfest.com</div>
+              <a
+                href="https://ngongoay-paperfest.com"
+                target="_blank"
+                rel="noopener"
+                class="folio-visit"
+              >
+                Visit Project <span class="folio-visit-arrow">↗</span>
+              </a>
+            </div>
+
+            <div class="folio-info" data-info="1">
+              <div class="folio-num">02</div>
+              <div class="folio-name">2S Tinkering Shop</div>
+              <div class="folio-url">2stinkering.org</div>
+              <a
+                href="https://2stinkering.org"
+                target="_blank"
+                rel="noopener"
+                class="folio-visit"
+              >
+                Visit Project <span class="folio-visit-arrow">↗</span>
+              </a>
+            </div>
+
+            <div class="folio-info" data-info="2">
+              <div class="folio-num">03</div>
+              <div class="folio-name">Tổ Tò Mò</div>
+              <div class="folio-url">totomo.org</div>
+              <a
+                href="https://totomo.org"
+                target="_blank"
+                rel="noopener"
+                class="folio-visit"
+              >
+                Visit Project <span class="folio-visit-arrow">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- RIGHT: Large video -->
+          <div class="folio-showcase">
+            <div class="folio-large-img active" data-large="0">
+              <video
+                src="video/ngongoay-paperfest.mp4"
+                loop
+                muted
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+              ></video>
+            </div>
+            <div class="folio-large-img" data-large="1">
+              <video
+                src="video/2stinkering.mp4"
+                loop
+                muted
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+              ></video>
+            </div>
+            <div class="folio-large-img" data-large="2">
+              <video
+                src="video/2stinkering.mp4"
+                loop
+                muted
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+              ></video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom progress -->
+        <div class="projects-progress-track">
+          <div class="projects-progress-fill" id="projectsProgressFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <div class="contact-inner">
+        <h2 class="contact-heading">
+          Let's work<br />together<span class="accent-dot">.</span>
+        </h2>
+        <div class="contact-links">
+          <a href="mailto:tientm05@gmail.com" class="contact-row">
+            <span class="contact-row-label">Email</span>
+            <span class="contact-row-value">tientm05@gmail.com</span>
+          </a>
+          <a
+            href="https://github.com/tientruong05"
+            target="_blank"
+            rel="noopener"
+            class="contact-row"
           >
-            <div class="flex items-center gap-2 mb-6">
-              <div class="w-4 h-4 bg-neo-pink border-2 border-black"></div>
-              <div class="w-4 h-4 bg-neo-yellow border-2 border-black"></div>
-              <div class="w-4 h-4 bg-neo-green border-2 border-black"></div>
-              <span class="ml-2 font-mono font-bold text-sm"
-                >new_message.send()</span
-              >
-            </div>
-
-            <!-- Using Formspree for form handling -->
-            <!-- Replace YOUR_FORM_ID with your actual Formspree form ID -->
-            <form
-              id="contact-form"
-              action="https://formspree.io/f/meoykrvd"
-              method="POST"
-              class="space-y-4"
-            >
-              <div>
-                <label class="block font-black uppercase mb-2 text-sm"
-                  >Your Name</label
-                >
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  class="w-full bg-gray-100 border-4 border-black p-4 font-mono focus:outline-none focus:bg-neo-purple focus:text-white transition-colors"
-                  placeholder="Your pretty name"
-                />
-              </div>
-              <div>
-                <label class="block font-black uppercase mb-2 text-sm"
-                  >Your Email</label
-                >
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  class="w-full bg-gray-100 border-4 border-black p-4 font-mono focus:outline-none focus:bg-neo-green transition-colors"
-                  placeholder="yourprettyemail@example.com"
-                />
-              </div>
-              <div>
-                <label class="block font-black uppercase mb-2 text-sm"
-                  >Your Message</label
-                >
-                <textarea
-                  rows="5"
-                  name="message"
-                  required
-                  class="w-full bg-gray-100 border-4 border-black p-4 font-mono focus:outline-none focus:bg-neo-blue focus:text-white transition-colors resize-none"
-                  placeholder="Hey Zander! I have an exciting opportunity..."
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                id="submit-btn"
-                class="w-full bg-neo-black text-white font-black text-xl py-5 border-4 border-neo-black hover:bg-neo-yellow hover:text-black transition-all shadow-hard hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px] uppercase tracking-wider"
-              >
-                🚀 Send Message
-              </button>
-            </form>
-
-            <!-- Success Message (hidden by default) -->
-            <div
-              id="success-message"
-              class="hidden mt-4 p-4 bg-neo-green border-4 border-black text-center"
-            >
-              <p class="font-black text-lg">✅ Message sent successfully!</p>
-              <p class="font-mono text-sm">I'll get back to you soon.</p>
-            </div>
-          </div>
+            <span class="contact-row-label">GitHub</span>
+            <span class="contact-row-value">tientruong05</span>
+          </a>
+          <a
+            href="https://linkedin.com/in/tientruong05"
+            target="_blank"
+            rel="noopener"
+            class="contact-row"
+          >
+            <span class="contact-row-label">LinkedIn</span>
+            <span class="contact-row-value">tientruong05</span>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer
-      class="bg-neo-black text-neo-white py-16 border-t-4 border-neo-black relative overflow-hidden"
-    >
-      <!-- Decorative Elements -->
-      <div
-        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-neo-pink via-neo-yellow to-neo-green"
-      ></div>
-
-      <div class="max-w-7xl mx-auto px-4">
-        <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          <!-- Brand Section -->
-          <div>
-            <h3 class="font-black text-3xl mb-4">
-              <span class="bg-neo-yellow text-neo-black px-2">ZANDER</span
-              >_TRUONG
-            </h3>
-            <p class="font-mono text-gray-400 text-sm leading-relaxed">
-              JavaScript Full Stack Developer crafting robust backends and
-              modern frontends. Always learning, always building.
-            </p>
-          </div>
-
-          <!-- Quick Links -->
-          <div>
-            <h4 class="font-black text-lg mb-4 text-neo-yellow">QUICK_LINKS</h4>
-            <ul class="space-y-2 font-mono text-sm">
-              <li>
-                <a
-                  href="#about"
-                  class="text-gray-400 hover:text-neo-pink transition-colors"
-                  >→ About Me</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#skills"
-                  class="text-gray-400 hover:text-neo-green transition-colors"
-                  >→ My Stack</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#projects"
-                  class="text-gray-400 hover:text-neo-blue transition-colors"
-                  >→ Projects</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  class="text-gray-400 hover:text-neo-purple transition-colors"
-                  >→ Contact</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Fun Terminal -->
-          <div>
-            <h4 class="font-black text-lg mb-4 text-neo-green">TERMINAL</h4>
-            <div
-              class="bg-gray-900 border-2 border-gray-700 p-4 font-mono text-xs"
-            >
-              <p class="text-gray-500">$ echo "Thanks for visiting!"</p>
-              <p class="text-neo-green mt-1">Thanks for visiting!</p>
-              <p class="text-gray-500 mt-2">$ date</p>
-              <p class="text-neo-yellow mt-1">2025 - Present</p>
-              <p class="text-gray-500 mt-2">$ whoami</p>
-              <p class="text-neo-pink mt-1">
-                zander_truong<span class="animate-pulse">_</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom Bar -->
-        <div
-          class="border-t-2 border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-          <p class="font-mono text-sm text-gray-500">
-            © 2025 Zander Truong. Built with
-            <span class="text-neo-pink">🎵</span> and lots of
-            <span class="text-neo-yellow">☕</span>
-          </p>
-          <p class="font-mono text-xs text-gray-600">
-            <span class="text-neo-green">●</span> All systems operational
-          </p>
-        </div>
-      </div>
+    <footer class="footer-bar">
+      <div class="footer-copy">© 2026 Trương Minh Tiến</div>
+      <button
+        class="footer-back-top"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      >
+        Back to Top ↑
+      </button>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" aria-label="Back to top" title="Back to top">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-8 w-8 text-white mx-auto"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="3"
-      >
-        <path
-          stroke-linecap="square"
-          stroke-linejoin="miter"
-          d="M5 10l7-7m0 0l7 7m-7-7v18"
-        />
-      </svg>
-    </button>
-
     <script>
-      function toggleMenu() {
-        const menu = document.getElementById("mobile-menu");
-        if (menu.classList.contains("translate-x-full")) {
-          menu.classList.remove("translate-x-full");
-        } else {
-          menu.classList.add("translate-x-full");
-        }
-      }
-
-      // Back to Top Button
-      const backToTopBtn = document.getElementById("backToTop");
-
+      // ── Scroll progress bar ──
       window.addEventListener("scroll", () => {
-        if (window.pageYOffset > 300) {
-          backToTopBtn.classList.add("show");
-        } else {
-          backToTopBtn.classList.remove("show");
+        const scrollTop = document.documentElement.scrollTop;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        document.getElementById("scrollProgress").style.width = progress + "%";
+      });
+
+      // ── Nav: hide over projects, dark over contact/footer ──
+      (function () {
+        const nav = document.querySelector(".nav");
+        const projectsEl = document.querySelector(".projects-scroll");
+        const contactEl = document.querySelector(".contact");
+
+        function updateNav() {
+          const projRect = projectsEl.getBoundingClientRect();
+          const contactRect = contactEl.getBoundingClientRect();
+
+          // Hide nav when projects section covers the top
+          const overProjects = projRect.top <= 0 && projRect.bottom > 60;
+          nav.classList.toggle("nav-hidden", overProjects);
+
+          // Dark nav when contact section is at the top
+          const overContact = contactRect.top <= 60;
+          nav.classList.toggle("nav-dark", overContact);
         }
-      });
 
-      backToTopBtn.addEventListener("click", () => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
+        let navTicking = false;
+        window.addEventListener("scroll", () => {
+          if (!navTicking) {
+            requestAnimationFrame(() => {
+              updateNav();
+              navTicking = false;
+            });
+            navTicking = true;
+          }
         });
+        updateNav();
+      })();
+
+      // ── Intersection Observer for general reveals ──
+      const revealElements = document.querySelectorAll("[data-reveal]");
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const delay = entry.target.dataset.revealDelay || 0;
+              setTimeout(() => {
+                entry.target.classList.add("visible");
+              }, delay);
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      );
+
+      revealElements.forEach((el, i) => {
+        el.dataset.revealDelay = i * 120;
+        revealObserver.observe(el);
       });
 
-      // Contact Form Handler
-      const form = document.getElementById("contact-form");
-      const submitBtn = document.getElementById("submit-btn");
-      const successMessage = document.getElementById("success-message");
+      // ── Projects 3-Column Scroll Folio ──
+      (function () {
+        const scrollContainer = document.querySelector(".projects-scroll");
+        const thumbs = document.querySelectorAll(".folio-thumb[data-thumb]");
+        const infos = document.querySelectorAll(".folio-info[data-info]");
+        const largeImgs = document.querySelectorAll(
+          ".folio-large-img[data-large]",
+        );
+        const counterEl = document.getElementById("counterCurrent");
+        const progressFill = document.getElementById("projectsProgressFill");
+        const stripProgress = document.getElementById("stripProgress");
+        const numProjects = thumbs.length;
 
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
+        // Runway: each project gets 1.5 viewport of scroll + entry zone
+        const totalScreens = numProjects + 0.5;
+        scrollContainer.style.height = totalScreens * 100 + "vh";
 
-        // Change button text to show loading
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = "⏳ Sending...";
-        submitBtn.disabled = true;
+        let currentActive = -1;
 
-        try {
-          const response = await fetch(form.action, {
-            method: "POST",
-            body: new FormData(form),
-            headers: {
-              Accept: "application/json",
-            },
+        function setActive(index) {
+          if (index === currentActive) return;
+
+          // Thumbnails
+          thumbs.forEach((t, i) => {
+            t.classList.toggle("active", i === index);
           });
 
-          if (response.ok) {
-            // Show success message
-            form.reset();
-            successMessage.classList.remove("hidden");
-            submitBtn.innerHTML = "✅ Sent!";
+          // Center info panels
+          infos.forEach((info, i) => {
+            info.classList.remove("active", "exiting");
+            if (i === index) info.classList.add("active");
+            else if (i < index) info.classList.add("exiting");
+          });
 
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-              successMessage.classList.add("hidden");
-              submitBtn.innerHTML = originalText;
-              submitBtn.disabled = false;
-            }, 5000);
-          } else {
-            throw new Error("Form submission failed");
+          // Large videos — reset & play active, pause others
+          largeImgs.forEach((container, i) => {
+            container.classList.remove("active", "exiting");
+            const vid = container.querySelector("video");
+            if (i === index) {
+              container.classList.add("active");
+              if (vid) {
+                vid.currentTime = 0;
+                vid.play();
+              }
+            } else {
+              if (i < index) container.classList.add("exiting");
+              if (vid) vid.pause();
+            }
+          });
+
+          // Counter
+          if (index >= 0) {
+            counterEl.textContent = String(index + 1).padStart(2, "0");
           }
-        } catch (error) {
-          submitBtn.innerHTML = "❌ Error! Try again";
-          submitBtn.disabled = false;
 
-          setTimeout(() => {
-            submitBtn.innerHTML = originalText;
-          }, 3000);
+          currentActive = index;
         }
-      });
-    </script>
 
-    <!-- AOS Animation Library -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-      // Initialize AOS
-      AOS.init({
-        duration: 800,
-        easing: "ease-in-out",
-        once: true,
-        offset: 100,
-        delay: 100,
-      });
+        function update() {
+          const rect = scrollContainer.getBoundingClientRect();
+          const scrollRunway =
+            scrollContainer.offsetHeight - window.innerHeight;
+          const rawProgress = -rect.top / scrollRunway;
+          const progress = Math.max(0, Math.min(1, rawProgress));
+
+          // Progress bar
+          progressFill.style.width = progress * 100 + "%";
+
+          // Strip progress (vertical line on left)
+          if (stripProgress) {
+            stripProgress.style.height = progress * 100 + "%";
+          }
+
+          // Map to active project
+          const entryZone = 0.08;
+          let activeIndex = 0;
+
+          if (progress <= entryZone) {
+            activeIndex = 0;
+          } else {
+            const cardProgress = (progress - entryZone) / (1 - entryZone);
+            activeIndex = Math.min(
+              Math.floor(cardProgress * numProjects),
+              numProjects - 1,
+            );
+          }
+
+          setActive(activeIndex);
+        }
+
+        let ticking = false;
+        window.addEventListener("scroll", () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              update();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+
+        // Initial
+        update();
+      })();
     </script>
   </body>
 </html>
