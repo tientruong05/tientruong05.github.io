@@ -759,10 +759,12 @@
 
       .exp-item {
         display: grid;
-        grid-template-columns: 200px 1fr;
+        grid-template-columns: 200px 1fr clamp(80px, 12vw, 140px);
+        grid-template-areas: "meta body logo";
         gap: clamp(24px, 4vw, 64px);
         padding: clamp(24px, 3vh, 40px) 0;
         border-bottom: 1px solid var(--rule);
+        align-items: start;
       }
 
       .exp-item:last-child {
@@ -770,9 +772,23 @@
       }
 
       .exp-meta {
+        grid-area: meta;
         display: flex;
         flex-direction: column;
         gap: 4px;
+      }
+
+      .exp-body {
+        grid-area: body;
+      }
+
+      .exp-logo {
+        grid-area: logo;
+        width: 100%;
+        height: auto;
+        max-height: 80px;
+        object-fit: contain;
+        mix-blend-mode: multiply; /* Optional: makes logos blend nicely if they have white bg */
       }
 
       .exp-date {
@@ -1449,8 +1465,15 @@
           padding: 48px 24px 120px;
         }
         .exp-item {
-          grid-template-columns: 1fr;
-          gap: 12px;
+          grid-template-columns: 1fr clamp(60px, 20vw, 100px);
+          grid-template-areas:
+            "meta logo"
+            "body body";
+          gap: 16px 12px;
+        }
+        .exp-logo {
+          max-height: 60px;
+          justify-self: end;
         }
 
         .projects-columns {
@@ -1817,6 +1840,11 @@
                   <li>Supporting business development operations</li>
                 </ul>
               </div>
+              <img
+                src="image/TMN-HOMES-LOGO.png"
+                alt="TMN Homes Logo"
+                class="exp-logo"
+              />
             </div>
             <div class="exp-item">
               <div class="exp-meta">
@@ -1842,6 +1870,11 @@
                   <li>Leveraged AI tools to speed up repetitive tasks</li>
                 </ul>
               </div>
+              <img
+                src="image/FPT_Software.webp"
+                alt="FPT Software Logo"
+                class="exp-logo"
+              />
             </div>
             <div class="exp-item">
               <div class="exp-meta">
@@ -1870,6 +1903,11 @@
                   </li>
                 </ul>
               </div>
+              <img
+                src="image/FPT_Software.webp"
+                alt="FPT Software Logo"
+                class="exp-logo"
+              />
             </div>
           </div>
         </div>
