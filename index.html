@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
       rel="stylesheet"
     />
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
       *,
       *::before,
@@ -30,25 +32,23 @@
         --accent-soft: #a2cb8b;
         --rule: rgba(30, 43, 26, 0.12);
         --rule-strong: rgba(30, 43, 26, 0.25);
-        --bezier-out: cubic-bezier(0.16, 1, 0.3, 1);
-        --bezier-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-        --bezier-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
 
       html {
-        scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
 
       body {
-        background: var(--bg);
+        background: #151f12;
         color: var(--ink);
         font-family: "Outfit", sans-serif;
         font-weight: 400;
         line-height: 1.6;
-        overflow-x: hidden;
+        overflow: hidden;
         cursor: default;
+        height: 100vh;
+        height: 100dvh;
       }
 
       /* Grain overlay */
@@ -72,98 +72,116 @@
       }
 
       /* ============================================
-         NAVIGATION
+         PAGE SYSTEM — GSAP-DRIVEN
          ============================================ */
-      .nav {
+      .book-viewport {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        padding: 20px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: opacity 0.4s ease, transform 0.4s var(--bezier-out);
+        inset: 0;
+        perspective: 1600px;
+        overflow: hidden;
       }
 
-      .nav.nav-hidden {
-        opacity: 0;
-        transform: translateY(-100%);
-        pointer-events: none;
-      }
-
-      .nav-logo {
-        font-weight: 700;
-        font-size: 13px;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--ink);
-        transition: color 0.4s ease;
-      }
-
-      .nav.nav-dark .nav-logo {
-        color: var(--bg);
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 32px;
-        list-style: none;
-      }
-
-      .nav-links a {
-        font-size: 12px;
-        font-weight: 500;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--ink);
-        position: relative;
-        padding-bottom: 2px;
-        transition: color 0.4s ease;
-      }
-
-      .nav.nav-dark .nav-links a {
-        color: var(--bg);
-      }
-
-      .nav-links a::after {
-        content: "";
+      .page {
         position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--ink);
-        transition: width 0.4s var(--bezier-out), background 0.4s ease;
-      }
-
-      .nav.nav-dark .nav-links a::after {
-        background: var(--bg);
-      }
-
-      .nav-links a:hover::after {
+        inset: 0;
         width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        opacity: 0;
+        visibility: hidden;
+        will-change: transform, opacity;
+      }
+
+      .page.active {
+        opacity: 1;
+        visibility: visible;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+      }
+
+      .page--projects.active {
+        overflow-y: hidden;
+      }
+
+      .page.active::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .page.active::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 2px;
+      }
+
+      /* During animation, both pages visible */
+      .page.animating {
+        visibility: visible;
       }
 
       /* ============================================
-         HERO — EDITORIAL SPLIT
+         BOTTOM FLOATING NAV
          ============================================ */
-      .hero {
-        min-height: 100vh;
-        min-height: 100dvh;
+      .bottom-nav {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10000;
+        display: flex;
+        gap: 4px;
+        padding: 6px;
+        background: rgba(30, 43, 26, 0.88);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border-radius: 999px;
+        border: 1px solid rgba(132, 177, 121, 0.12);
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.25),
+          0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .bottom-nav-item {
+        padding: 10px 22px;
+        font-family: "Outfit", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(244, 248, 240, 0.45);
+        border: none;
+        background: transparent;
+        border-radius: 999px;
+        cursor: pointer;
+        transition:
+          color 0.3s ease,
+          background 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .bottom-nav-item:hover {
+        color: rgba(244, 248, 240, 0.8);
+      }
+
+      .bottom-nav-item.active {
+        color: var(--bg);
+        background: var(--accent);
+      }
+
+      /* ============================================
+         PAGE 1: HOME
+         ============================================ */
+      .page--home .page-content {
+        height: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        position: relative;
-        overflow: hidden;
       }
 
       .hero-left {
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
         padding: 0 clamp(32px, 5vw, 80px);
-        padding-bottom: clamp(48px, 8vh, 100px);
         position: relative;
       }
 
@@ -192,9 +210,6 @@
         text-transform: uppercase;
         color: var(--ink-muted);
         margin-bottom: 20px;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: revealUp 0.8s var(--bezier-out) 0.3s forwards;
       }
 
       .hero-name {
@@ -205,9 +220,6 @@
         letter-spacing: -0.03em;
         color: var(--ink);
         margin-bottom: 28px;
-        opacity: 0;
-        transform: translateY(40px);
-        animation: revealUp 1s var(--bezier-out) 0.5s forwards;
       }
 
       .hero-name .accent-dot {
@@ -221,9 +233,6 @@
         color: var(--ink-soft);
         max-width: 440px;
         margin-bottom: 40px;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: revealUp 0.8s var(--bezier-out) 0.7s forwards;
       }
 
       .hero-tagline em {
@@ -238,9 +247,6 @@
         display: flex;
         align-items: center;
         gap: 24px;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: revealUp 0.8s var(--bezier-out) 0.9s forwards;
       }
 
       .btn-primary {
@@ -259,7 +265,7 @@
         cursor: pointer;
         position: relative;
         overflow: hidden;
-        transition: transform 0.4s var(--bezier-out);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .btn-primary::before {
@@ -268,7 +274,7 @@
         inset: 0;
         background: var(--accent);
         transform: translateX(-101%);
-        transition: transform 0.5s var(--bezier-out);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .btn-primary:hover::before {
@@ -287,7 +293,7 @@
       .btn-primary .btn-arrow {
         position: relative;
         z-index: 1;
-        transition: transform 0.4s var(--bezier-out);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         font-size: 16px;
       }
 
@@ -313,39 +319,14 @@
         border-color: var(--accent);
       }
 
-      /* Hero Right — Status Panel */
       .hero-right {
         background: var(--bg-warm);
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
         padding: clamp(32px, 4vw, 64px);
-        padding-bottom: clamp(48px, 8vh, 100px);
         position: relative;
         border-left: 1px solid var(--rule);
-      }
-
-      .hero-right::after {
-        content: "";
-        position: absolute;
-        top: 40px;
-        right: 40px;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 0 4px rgba(132, 177, 121, 0.15);
-        animation: pulse-dot 2.5s ease-in-out infinite;
-      }
-
-      @keyframes pulse-dot {
-        0%,
-        100% {
-          box-shadow: 0 0 0 4px rgba(132, 177, 121, 0.15);
-        }
-        50% {
-          box-shadow: 0 0 0 10px rgba(132, 177, 121, 0);
-        }
       }
 
       .status-badge {
@@ -358,8 +339,6 @@
         text-transform: uppercase;
         color: var(--accent);
         margin-bottom: 40px;
-        opacity: 0;
-        animation: fadeIn 0.6s ease 1s forwards;
       }
 
       .status-badge::before {
@@ -374,10 +353,6 @@
         list-style: none;
         display: flex;
         flex-direction: column;
-        gap: 0;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: revealUp 0.8s var(--bezier-out) 1.1s forwards;
       }
 
       .role-entry {
@@ -386,13 +361,12 @@
         align-items: baseline;
         padding: 16px 0;
         border-top: 1px solid var(--rule);
-        transition: padding-left 0.4s var(--bezier-out);
+        transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .role-entry:hover {
         padding-left: 8px;
       }
-
       .role-entry:last-child {
         border-bottom: 1px solid var(--rule);
       }
@@ -420,8 +394,6 @@
         font-weight: 400;
         letter-spacing: 0.06em;
         color: var(--ink-muted);
-        opacity: 0;
-        animation: fadeIn 0.6s ease 1.3s forwards;
       }
 
       .hero-location span {
@@ -432,16 +404,11 @@
       /* ============================================
          SECTION COMMON
          ============================================ */
-      .section {
-        padding: clamp(64px, 10vh, 140px) clamp(24px, 5vw, 80px);
-        position: relative;
-      }
-
       .section-header {
         display: flex;
         align-items: baseline;
         gap: 16px;
-        margin-bottom: clamp(40px, 6vh, 80px);
+        margin-bottom: clamp(32px, 5vh, 64px);
       }
 
       .section-number {
@@ -449,7 +416,6 @@
         font-weight: 400;
         font-size: clamp(14px, 1.2vw, 18px);
         color: var(--accent);
-        letter-spacing: 0.05em;
       }
 
       .section-title {
@@ -467,36 +433,23 @@
       }
 
       /* ============================================
-         EXPERIENCE
+         PAGE 2: EXPERIENCE
          ============================================ */
-      .experience {
+      .page--experience {
         background: var(--surface);
-        border-top: 1px solid var(--rule);
-        border-bottom: 1px solid var(--rule);
       }
 
-      .exp-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0;
+      .page--experience .page-content {
+        padding: clamp(48px, 8vh, 100px) clamp(24px, 5vw, 80px);
+        padding-bottom: 120px;
       }
 
       .exp-item {
         display: grid;
         grid-template-columns: 200px 1fr;
         gap: clamp(24px, 4vw, 64px);
-        padding: clamp(28px, 4vh, 48px) 0;
+        padding: clamp(24px, 3vh, 40px) 0;
         border-bottom: 1px solid var(--rule);
-        opacity: 0;
-        transform: translateY(24px);
-        transition:
-          opacity 0.7s var(--bezier-out),
-          transform 0.7s var(--bezier-out);
-      }
-
-      .exp-item.visible {
-        opacity: 1;
-        transform: translateY(0);
       }
 
       .exp-item:last-child {
@@ -528,7 +481,6 @@
         font-size: 11px;
         font-weight: 400;
         color: var(--ink-muted);
-        letter-spacing: 0.04em;
       }
 
       .exp-body h3 {
@@ -566,26 +518,18 @@
       }
 
       /* ============================================
-         PROJECTS — 3-COLUMN SCROLL FOLIO
+         PAGE 3: PROJECTS
          ============================================ */
-
-      .projects-scroll {
-        position: relative;
-        /* height set by JS */
+      .page--projects {
+        background: #243d1e;
       }
 
-      .projects-sticky {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        height: 100dvh;
-        overflow: hidden;
-        background: #243d1e;
+      .page--projects .page-content {
         display: flex;
         flex-direction: column;
+        height: 100%;
       }
 
-      /* Section label bar */
       .projects-topbar {
         display: flex;
         justify-content: space-between;
@@ -598,15 +542,12 @@
       .projects-topbar .section-header {
         margin-bottom: 0;
       }
-
       .projects-topbar .section-number {
         color: var(--accent-soft);
       }
-
       .projects-topbar .section-title {
         color: rgba(244, 248, 240, 0.4);
       }
-
       .projects-topbar .section-rule {
         background: rgba(244, 248, 240, 0.08);
       }
@@ -625,7 +566,6 @@
         font-size: 14px;
       }
 
-      /* 3-column layout — center narrow, right wide */
       .projects-columns {
         flex: 1;
         display: grid;
@@ -633,36 +573,15 @@
         min-height: 0;
       }
 
-      /* === LEFT COLUMN: Thumbnail filmstrip === */
       .folio-strip {
         border-right: 1px solid rgba(244, 248, 240, 0.06);
         display: flex;
         flex-direction: column;
         padding: clamp(20px, 3vh, 40px) clamp(16px, 2vw, 32px);
         gap: 12px;
-        overflow: hidden;
-        position: relative;
-      }
-
-      /* Vertical progress line */
-      .folio-strip::before {
-        content: "";
-        position: absolute;
-        left: 10px;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: rgba(244, 248, 240, 0.04);
-      }
-
-      .folio-strip-progress {
-        position: absolute;
-        left: 10px;
-        top: 0;
-        width: 2px;
-        height: 0%;
-        background: var(--accent);
-        transition: height 0.4s var(--bezier-out);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
       }
 
       .folio-thumb {
@@ -675,8 +594,8 @@
         opacity: 0.35;
         transform: scale(0.92);
         transition:
-          opacity 0.5s var(--bezier-out),
-          transform 0.5s var(--bezier-out),
+          opacity 0.5s ease,
+          transform 0.5s ease,
           border-color 0.4s ease;
         flex-shrink: 0;
       }
@@ -685,6 +604,13 @@
         opacity: 1;
         transform: scale(1);
         border-color: var(--accent);
+      }
+
+      .folio-thumb:hover {
+        opacity: 0.7;
+      }
+      .folio-thumb.active:hover {
+        opacity: 1;
       }
 
       .folio-thumb img {
@@ -700,7 +626,6 @@
         filter: grayscale(0);
       }
 
-      /* Thumb number badge */
       .folio-thumb-num {
         position: absolute;
         bottom: 6px;
@@ -711,11 +636,8 @@
         color: rgba(244, 248, 240, 0.7);
         background: rgba(30, 43, 26, 0.7);
         padding: 1px 6px;
-        letter-spacing: 0.05em;
-        line-height: 1.4;
       }
 
-      /* === CENTER COLUMN: Project info === */
       .folio-center {
         display: flex;
         flex-direction: column;
@@ -727,7 +649,6 @@
         text-align: center;
       }
 
-      /* All project infos stacked, only active visible */
       .folio-info {
         position: absolute;
         inset: 0;
@@ -739,8 +660,8 @@
         opacity: 0;
         transform: translateY(30px);
         transition:
-          opacity 0.6s var(--bezier-out),
-          transform 0.6s var(--bezier-out);
+          opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: none;
       }
 
@@ -761,7 +682,6 @@
         font-size: clamp(40px, 5vw, 72px);
         line-height: 0.85;
         color: rgba(244, 248, 240, 0.06);
-        letter-spacing: -0.04em;
         margin-bottom: 16px;
       }
 
@@ -807,14 +727,13 @@
 
       .folio-visit-arrow {
         font-size: 14px;
-        transition: transform 0.4s var(--bezier-out);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .folio-visit:hover .folio-visit-arrow {
         transform: translate(3px, -3px);
       }
 
-      /* === RIGHT COLUMN: Large image === */
       .folio-showcase {
         position: relative;
         overflow: hidden;
@@ -834,8 +753,8 @@
         opacity: 0;
         transform: scale(1.04);
         transition:
-          opacity 0.7s var(--bezier-out),
-          transform 0.7s var(--bezier-out);
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .folio-large-img.active {
@@ -861,46 +780,33 @@
           0 2px 12px rgba(0, 0, 0, 0.15);
       }
 
-      /* Hide all video controls and overlays */
       .folio-large-img video::-webkit-media-controls {
         display: none !important;
       }
-
       .folio-large-img video::-webkit-media-controls-enclosure {
         display: none !important;
       }
 
-      /* Bottom progress bar */
-      .projects-progress-track {
-        width: 100%;
-        height: 3px;
-        background: rgba(244, 248, 240, 0.04);
-        position: relative;
-        flex-shrink: 0;
-      }
-
-      .projects-progress-fill {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 0%;
-        background: var(--accent);
-        transition: width 0.15s linear;
-      }
-
       /* ============================================
-         CONTACT / FOOTER
+         PAGE 4: CONTACT
          ============================================ */
-      .contact {
+      .page--contact {
         background: var(--ink);
         color: var(--bg);
+      }
+
+      .page--contact .page-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
         padding: clamp(64px, 10vh, 140px) clamp(24px, 5vw, 80px);
+        padding-bottom: 100px;
         position: relative;
         overflow: hidden;
       }
 
-      .contact::before {
+      .page--contact .page-content::before {
         content: "";
         position: absolute;
         bottom: -100px;
@@ -936,7 +842,6 @@
       .contact-links {
         display: flex;
         flex-direction: column;
-        gap: 0;
       }
 
       .contact-row {
@@ -945,7 +850,7 @@
         align-items: center;
         padding: 18px 0;
         border-top: 1px solid rgba(244, 248, 240, 0.1);
-        transition: padding-left 0.4s var(--bezier-out);
+        transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .contact-row:last-child {
@@ -975,118 +880,29 @@
         color: var(--accent-soft);
       }
 
-      /* Footer bar */
-      .footer-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px clamp(24px, 5vw, 80px);
-        background: var(--ink);
-        border-top: 1px solid rgba(244, 248, 240, 0.06);
-      }
-
-      .footer-copy {
-        font-size: 11px;
-        font-weight: 400;
-        letter-spacing: 0.06em;
-        color: rgba(244, 248, 240, 0.3);
-      }
-
-      .footer-back-top {
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: rgba(244, 248, 240, 0.3);
-        cursor: pointer;
-        transition: color 0.3s ease;
-        background: none;
-        border: none;
-        font-family: "Outfit", sans-serif;
-      }
-
-      .footer-back-top:hover {
-        color: var(--accent-soft);
-      }
-
-      /* ============================================
-         ANIMATIONS
-         ============================================ */
-      @keyframes revealUp {
-        from {
-          opacity: 0;
-          transform: translateY(var(--reveal-y, 30px));
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      @keyframes slideRule {
-        from {
-          transform: scaleX(0);
-        }
-        to {
-          transform: scaleX(1);
-        }
-      }
-
-      /* ============================================
-         SCROLL PROGRESS BAR
-         ============================================ */
-      .scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 2px;
-        background: var(--accent);
-        width: 0%;
-        z-index: 200;
-        transition: width 0.1s linear;
-      }
-
       /* ============================================
          RESPONSIVE
          ============================================ */
       @media (max-width: 900px) {
-        .nav {
-          padding: 16px 20px;
-        }
-
-        .nav-links {
-          gap: 20px;
-        }
-
-        .hero {
+        .page--home .page-content {
           grid-template-columns: 1fr;
-          min-height: auto;
         }
 
         .hero-left {
-          padding: 120px 24px 48px;
+          justify-content: flex-end;
+          padding: 80px 24px 32px;
         }
 
         .hero-right {
           border-left: none;
           border-top: 1px solid var(--rule);
-          padding: 40px 24px 48px;
+          padding: 32px 24px 100px;
         }
 
-        .hero-right::after {
-          top: 24px;
-          right: 24px;
-        }
 
+        .page--experience .page-content {
+          padding: 48px 24px 120px;
+        }
         .exp-item {
           grid-template-columns: 1fr;
           gap: 12px;
@@ -1105,40 +921,28 @@
           border-right: none;
           border-bottom: 1px solid rgba(244, 248, 240, 0.06);
           padding: 24px;
-          min-height: 220px;
+          min-height: 200px;
         }
 
         .folio-info {
           padding: 24px;
         }
-
         .folio-num {
-          font-size: clamp(40px, 14vw, 64px);
+          font-size: clamp(32px, 10vw, 48px);
         }
-
         .folio-name {
-          font-size: clamp(22px, 6vw, 36px);
+          font-size: clamp(18px, 5vw, 28px);
         }
-
         .folio-showcase {
-          min-height: 280px;
+          min-height: 240px;
         }
-
         .contact-inner {
           grid-template-columns: 1fr;
           gap: 40px;
         }
-
-        .section {
-          padding: 48px 24px;
-        }
       }
 
       @media (max-width: 600px) {
-        .nav-links {
-          display: none;
-        }
-
         .hero-name {
           font-size: clamp(40px, 12vw, 64px);
         }
@@ -1152,420 +956,432 @@
         .contact-heading {
           font-size: clamp(32px, 10vw, 48px);
         }
+
+        .bottom-nav {
+          bottom: 16px;
+          padding: 5px;
+          gap: 2px;
+        }
+
+        .bottom-nav-item {
+          padding: 8px 14px;
+          font-size: 10px;
+          letter-spacing: 0.06em;
+        }
       }
     </style>
   </head>
 
   <body>
-    <!-- Scroll progress -->
-    <div class="scroll-progress" id="scrollProgress"></div>
-
-    <!-- Navigation -->
-    <nav class="nav">
-      <div class="nav-logo">TMT</div>
-      <ul class="nav-links">
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-
-    <!-- Hero — Editorial Split -->
-    <section class="hero" id="top">
-      <div class="hero-left">
-        <div class="hero-overline">Web Developer &amp; Builder</div>
-        <h1 class="hero-name">
-          Trương<br />Minh Tiến<span class="accent-dot">.</span>
-        </h1>
-        <p class="hero-tagline">
-          I build things for the web &amp; figure out the <em>rest</em> along
-          the way.
-        </p>
-        <div class="hero-cta-row">
-          <a href="mailto:tientm05@gmail.com" class="btn-primary">
-            <span>Get in Touch</span>
-            <span class="btn-arrow">→</span>
-          </a>
-          <a
-            href="https://github.com/tientruong05"
-            target="_blank"
-            rel="noopener"
-            class="btn-ghost"
-            >View GitHub</a
-          >
-        </div>
-      </div>
-
-      <div class="hero-right">
-        <div class="status-badge">Available for Work</div>
-        <ul class="role-list">
-          <li class="role-entry">
-            <span class="role-label">Freelance</span>
-            <span class="role-place solo">Web Developer</span>
-          </li>
-          <li class="role-entry">
-            <span class="role-label">Business Dev Intern</span>
-            <span class="role-place">TMN Homes</span>
-          </li>
-          <li class="role-entry">
-            <span class="role-label">Crew Member</span>
-            <span class="role-place">KFC</span>
-          </li>
-        </ul>
-        <div class="hero-location">
-          Based in <span>Quy Nhon, Gia Lai, Vietnam</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="section experience" id="experience">
-      <div class="section-header">
-        <span class="section-number">01</span>
-        <span class="section-title">Experience</span>
-        <div class="section-rule"></div>
-      </div>
-
-      <div class="exp-grid">
-        <div class="exp-item" data-reveal>
-          <div class="exp-meta">
-            <div class="exp-date">Mar 2026 — Present</div>
-            <div class="exp-company">TMN Homes</div>
-            <div class="exp-type">Internship</div>
+    <div class="book-viewport">
+      <!-- PAGE 1: HOME -->
+      <div class="page page--home active" data-page="0">
+        <div class="page-content">
+          <div class="hero-left">
+            <div class="hero-overline">Web Developer &amp; Builder</div>
+            <h1 class="hero-name">
+              Trương<br />Minh Tiến<span class="accent-dot">.</span>
+            </h1>
+            <p class="hero-tagline">
+              I build things for the web &amp; figure out the
+              <em>rest</em> along the way.
+            </p>
+            <div class="hero-cta-row">
+              <a href="mailto:tientm05@gmail.com" class="btn-primary">
+                <span>Get in Touch</span>
+                <span class="btn-arrow">→</span>
+              </a>
+              <a
+                href="https://github.com/tientruong05"
+                target="_blank"
+                rel="noopener"
+                class="btn-ghost"
+                >View GitHub</a
+              >
+            </div>
           </div>
-          <div class="exp-body">
-            <h3>Business Development</h3>
-            <ul class="exp-points">
-              <li>Supporting business development operations</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="exp-item" data-reveal>
-          <div class="exp-meta">
-            <div class="exp-date">May — Jul 2025</div>
-            <div class="exp-company">FPT Software</div>
-            <div class="exp-type">Internship</div>
-          </div>
-          <div class="exp-body">
-            <h3>Website Developer</h3>
-            <ul class="exp-points">
-              <li>
-                Refactored &amp; redesigned main pages on a ReactJS-based
-                website for cleaner UI
+          <div class="hero-right">
+            <div class="status-badge">Available for Work</div>
+            <ul class="role-list">
+              <li class="role-entry">
+                <span class="role-label">Freelance</span>
+                <span class="role-place solo">Web Developer</span>
               </li>
-              <li>
-                Used Postman to test .NET APIs, ensuring correct frontend data
-                display
+              <li class="role-entry">
+                <span class="role-label">Business Dev Intern</span>
+                <span class="role-place">TMN Homes</span>
               </li>
-              <li>
-                Spotted and fixed various UI bugs for smoother user experience
-              </li>
-              <li>Leveraged AI tools to speed up repetitive tasks</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="exp-item" data-reveal>
-          <div class="exp-meta">
-            <div class="exp-date">Aug — Oct 2024</div>
-            <div class="exp-company">FPT Software</div>
-            <div class="exp-type">Internship</div>
-          </div>
-          <div class="exp-body">
-            <h3>Manual Tester</h3>
-            <ul class="exp-points">
-              <li>
-                Contributed to post-migration website testing (UI Testing
-                Project)
-              </li>
-              <li>
-                Analyzed user stories, JSON files &amp; Figma designs to
-                understand requirements
-              </li>
-              <li>
-                Executed tests based on detailed design specs to verify
-                functionality
-              </li>
-              <li>
-                Logged &amp; tracked bugs in Jira, fostering effective dev
-                communication
+              <li class="role-entry">
+                <span class="role-label">Crew Member</span>
+                <span class="role-place">KFC</span>
               </li>
             </ul>
+            <div class="hero-location">
+              Based in <span>Quy Nhon, Gia Lai, Vietnam</span>
+            </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Projects — 3-Column Scroll Folio -->
-    <div class="projects-scroll" id="projects">
-      <div class="projects-sticky">
-        <!-- Top bar -->
-        <div class="projects-topbar">
+      <!-- PAGE 2: PROJECTS -->
+      <div class="page page--projects" data-page="1">
+        <div class="page-content">
+          <div class="projects-topbar">
+            <div class="section-header">
+              <span class="section-number">01</span>
+              <span class="section-title">Selected Works</span>
+              <div class="section-rule"></div>
+            </div>
+            <div class="projects-counter-top">
+              <span class="ct-active" id="counterCurrent">01</span>
+              <span> / 03</span>
+            </div>
+          </div>
+          <div class="projects-columns">
+            <div class="folio-strip">
+              <div class="folio-thumb active" data-thumb="0">
+                <img
+                  src="image/ngongoay-paperfest.jpg"
+                  alt="Ngọ Ngoạy PaperFest"
+                />
+                <span class="folio-thumb-num">01</span>
+              </div>
+              <div class="folio-thumb" data-thumb="1">
+                <img src="image/2stinkering.jpg" alt="2S Tinkering Shop" />
+                <span class="folio-thumb-num">02</span>
+              </div>
+              <div class="folio-thumb" data-thumb="2">
+                <img src="image/zander.jpg" alt="Tổ Tò Mò" />
+                <span class="folio-thumb-num">03</span>
+              </div>
+            </div>
+            <div class="folio-center">
+              <div class="folio-info active" data-info="0">
+                <div class="folio-num">01</div>
+                <div class="folio-name">Ngọ Ngoạy PaperFest</div>
+                <div class="folio-url">ngongoay-paperfest.com</div>
+                <a
+                  href="https://ngongoay-paperfest.com"
+                  target="_blank"
+                  rel="noopener"
+                  class="folio-visit"
+                >
+                  Visit Project <span class="folio-visit-arrow">↗</span>
+                </a>
+              </div>
+              <div class="folio-info" data-info="1">
+                <div class="folio-num">02</div>
+                <div class="folio-name">2S Tinkering Shop</div>
+                <div class="folio-url">2stinkering.org</div>
+                <a
+                  href="https://2stinkering.org"
+                  target="_blank"
+                  rel="noopener"
+                  class="folio-visit"
+                >
+                  Visit Project <span class="folio-visit-arrow">↗</span>
+                </a>
+              </div>
+              <div class="folio-info" data-info="2">
+                <div class="folio-num">03</div>
+                <div class="folio-name">Tổ Tò Mò</div>
+                <div class="folio-url">totomo.org</div>
+                <a
+                  href="https://totomo.org"
+                  target="_blank"
+                  rel="noopener"
+                  class="folio-visit"
+                >
+                  Visit Project <span class="folio-visit-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+            <div class="folio-showcase">
+              <div class="folio-large-img active" data-large="0">
+                <video
+                  src="video/ngongoay-paperfest.mp4"
+                  loop
+                  muted
+                  playsinline
+                  disablepictureinpicture
+                  preload="auto"
+                ></video>
+              </div>
+              <div class="folio-large-img" data-large="1">
+                <video
+                  src="video/2stinkering.mp4"
+                  loop
+                  muted
+                  playsinline
+                  disablepictureinpicture
+                  preload="auto"
+                ></video>
+              </div>
+              <div class="folio-large-img" data-large="2">
+                <video
+                  src="video/2stinkering.mp4"
+                  loop
+                  muted
+                  playsinline
+                  disablepictureinpicture
+                  preload="auto"
+                ></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 3: EXPERIENCE -->
+      <div class="page page--experience" data-page="2">
+        <div class="page-content">
           <div class="section-header">
             <span class="section-number">02</span>
-            <span class="section-title">Selected Works</span>
+            <span class="section-title">Experience</span>
             <div class="section-rule"></div>
           </div>
-          <div class="projects-counter-top">
-            <span class="ct-active" id="counterCurrent">01</span>
-            <span> / 03</span>
-          </div>
-        </div>
-
-        <!-- 3 columns -->
-        <div class="projects-columns">
-          <!-- LEFT: Thumbnail filmstrip -->
-          <div class="folio-strip">
-            <div class="folio-strip-progress" id="stripProgress"></div>
-
-            <div class="folio-thumb active" data-thumb="0">
-              <img
-                src="image/ngongoay-paperfest.jpg"
-                alt="Ngọ Ngoạy PaperFest"
-              />
-              <span class="folio-thumb-num">01</span>
+          <div class="exp-grid">
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-date">Mar 2026 — Present</div>
+                <div class="exp-company">TMN Homes</div>
+                <div class="exp-type">Internship</div>
+              </div>
+              <div class="exp-body">
+                <h3>Business Development</h3>
+                <ul class="exp-points">
+                  <li>Supporting business development operations</li>
+                </ul>
+              </div>
             </div>
-            <div class="folio-thumb" data-thumb="1">
-              <img src="image/2stinkering.jpg" alt="2S Tinkering Shop" />
-              <span class="folio-thumb-num">02</span>
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-date">May — Jul 2025</div>
+                <div class="exp-company">FPT Software</div>
+                <div class="exp-type">Internship</div>
+              </div>
+              <div class="exp-body">
+                <h3>Website Developer</h3>
+                <ul class="exp-points">
+                  <li>Refactored &amp; redesigned main pages on a ReactJS-based website for cleaner UI</li>
+                  <li>Used Postman to test .NET APIs, ensuring correct frontend data display</li>
+                  <li>Spotted and fixed various UI bugs for smoother user experience</li>
+                  <li>Leveraged AI tools to speed up repetitive tasks</li>
+                </ul>
+              </div>
             </div>
-            <div class="folio-thumb" data-thumb="2">
-              <img src="image/zander.jpg" alt="Tổ Tò Mò" />
-              <span class="folio-thumb-num">03</span>
-            </div>
-          </div>
-
-          <!-- CENTER: Project info -->
-          <div class="folio-center">
-            <div class="folio-info active" data-info="0">
-              <div class="folio-num">01</div>
-              <div class="folio-name">Ngọ Ngoạy PaperFest</div>
-              <div class="folio-url">ngongoay-paperfest.com</div>
-              <a
-                href="https://ngongoay-paperfest.com"
-                target="_blank"
-                rel="noopener"
-                class="folio-visit"
-              >
-                Visit Project <span class="folio-visit-arrow">↗</span>
-              </a>
-            </div>
-
-            <div class="folio-info" data-info="1">
-              <div class="folio-num">02</div>
-              <div class="folio-name">2S Tinkering Shop</div>
-              <div class="folio-url">2stinkering.org</div>
-              <a
-                href="https://2stinkering.org"
-                target="_blank"
-                rel="noopener"
-                class="folio-visit"
-              >
-                Visit Project <span class="folio-visit-arrow">↗</span>
-              </a>
-            </div>
-
-            <div class="folio-info" data-info="2">
-              <div class="folio-num">03</div>
-              <div class="folio-name">Tổ Tò Mò</div>
-              <div class="folio-url">totomo.org</div>
-              <a
-                href="https://totomo.org"
-                target="_blank"
-                rel="noopener"
-                class="folio-visit"
-              >
-                Visit Project <span class="folio-visit-arrow">↗</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- RIGHT: Large video -->
-          <div class="folio-showcase">
-            <div class="folio-large-img active" data-large="0">
-              <video
-                src="video/ngongoay-paperfest.mp4"
-                loop
-                muted
-                playsinline
-                disablepictureinpicture
-                preload="auto"
-              ></video>
-            </div>
-            <div class="folio-large-img" data-large="1">
-              <video
-                src="video/2stinkering.mp4"
-                loop
-                muted
-                playsinline
-                disablepictureinpicture
-                preload="auto"
-              ></video>
-            </div>
-            <div class="folio-large-img" data-large="2">
-              <video
-                src="video/2stinkering.mp4"
-                loop
-                muted
-                playsinline
-                disablepictureinpicture
-                preload="auto"
-              ></video>
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-date">Aug — Oct 2024</div>
+                <div class="exp-company">FPT Software</div>
+                <div class="exp-type">Internship</div>
+              </div>
+              <div class="exp-body">
+                <h3>Manual Tester</h3>
+                <ul class="exp-points">
+                  <li>Contributed to post-migration website testing (UI Testing Project)</li>
+                  <li>Analyzed user stories, JSON files &amp; Figma designs to understand requirements</li>
+                  <li>Executed tests based on detailed design specs to verify functionality</li>
+                  <li>Logged &amp; tracked bugs in Jira, fostering effective dev communication</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Bottom progress -->
-        <div class="projects-progress-track">
-          <div class="projects-progress-fill" id="projectsProgressFill"></div>
+      <!-- PAGE 4: CONTACT -->
+      <div class="page page--contact" data-page="3">
+        <div class="page-content">
+          <div class="contact-inner">
+            <h2 class="contact-heading">
+              Let's work<br />together<span class="accent-dot">.</span>
+            </h2>
+            <div class="contact-links">
+              <a href="mailto:tientm05@gmail.com" class="contact-row">
+                <span class="contact-row-label">Email</span>
+                <span class="contact-row-value">tientm05@gmail.com</span>
+              </a>
+              <a
+                href="https://github.com/tientruong05"
+                target="_blank"
+                rel="noopener"
+                class="contact-row"
+              >
+                <span class="contact-row-label">GitHub</span>
+                <span class="contact-row-value">tientruong05</span>
+              </a>
+              <a
+                href="https://linkedin.com/in/tientruong05"
+                target="_blank"
+                rel="noopener"
+                class="contact-row"
+              >
+                <span class="contact-row-label">LinkedIn</span>
+                <span class="contact-row-value">tientruong05</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Contact -->
-    <section class="contact" id="contact">
-      <div class="contact-inner">
-        <h2 class="contact-heading">
-          Let's work<br />together<span class="accent-dot">.</span>
-        </h2>
-        <div class="contact-links">
-          <a href="mailto:tientm05@gmail.com" class="contact-row">
-            <span class="contact-row-label">Email</span>
-            <span class="contact-row-value">tientm05@gmail.com</span>
-          </a>
-          <a
-            href="https://github.com/tientruong05"
-            target="_blank"
-            rel="noopener"
-            class="contact-row"
-          >
-            <span class="contact-row-label">GitHub</span>
-            <span class="contact-row-value">tientruong05</span>
-          </a>
-          <a
-            href="https://linkedin.com/in/tientruong05"
-            target="_blank"
-            rel="noopener"
-            class="contact-row"
-          >
-            <span class="contact-row-label">LinkedIn</span>
-            <span class="contact-row-value">tientruong05</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer-bar">
-      <div class="footer-copy">© 2026 Trương Minh Tiến</div>
-      <button
-        class="footer-back-top"
-        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-      >
-        Back to Top ↑
-      </button>
-    </footer>
+    <!-- FLOATING BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-item active" data-target="0">Home</button>
+      <button class="bottom-nav-item" data-target="1">Projects</button>
+      <button class="bottom-nav-item" data-target="2">Experience</button>
+      <button class="bottom-nav-item" data-target="3">Contact</button>
+    </nav>
 
     <script>
-      // ── Scroll progress bar ──
-      window.addEventListener("scroll", () => {
-        const scrollTop = document.documentElement.scrollTop;
-        const docHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-        document.getElementById("scrollProgress").style.width = progress + "%";
-      });
-
-      // ── Nav: hide over projects, dark over contact/footer ──
+      // ── GSAP Page Flip Navigation ──
       (function () {
-        const nav = document.querySelector(".nav");
-        const projectsEl = document.querySelector(".projects-scroll");
-        const contactEl = document.querySelector(".contact");
+        const pages = document.querySelectorAll(".page[data-page]");
+        const navItems = document.querySelectorAll(
+          ".bottom-nav-item[data-target]",
+        );
+        let currentPage = 0;
+        let isAnimating = false;
 
-        function updateNav() {
-          const projRect = projectsEl.getBoundingClientRect();
-          const contactRect = contactEl.getBoundingClientRect();
+        function navigateTo(targetIndex) {
+          if (targetIndex === currentPage || isAnimating) return;
+          isAnimating = true;
 
-          // Hide nav when projects section covers the top
-          const overProjects = projRect.top <= 0 && projRect.bottom > 60;
-          nav.classList.toggle("nav-hidden", overProjects);
+          const leaving = pages[currentPage];
+          const entering = pages[targetIndex];
+          const goingForward = targetIndex > currentPage;
 
-          // Dark nav when contact section is at the top
-          const overContact = contactRect.top <= 60;
-          nav.classList.toggle("nav-dark", overContact);
+          // Make entering page visible for animation
+          entering.classList.add("animating");
+          entering.scrollTop = 0;
+
+          // GSAP timeline for smooth, coordinated animation
+          const tl = gsap.timeline({
+            onComplete: function () {
+              // Clean up
+              leaving.classList.remove("active", "animating");
+              gsap.set(leaving, { clearProps: "all" });
+
+              entering.classList.remove("animating");
+              entering.classList.add("active");
+              gsap.set(entering, { clearProps: "all" });
+
+              // Handle project videos
+              handleProjectVideos(targetIndex);
+
+              currentPage = targetIndex;
+              isAnimating = false;
+            },
+          });
+
+          // Leaving page: rotate away + scale down + fade
+          tl.to(leaving, {
+            rotateY: goingForward ? -90 : 60,
+            scale: 0.88,
+            opacity: 0,
+            transformOrigin: goingForward ? "left center" : "right center",
+            duration: 1,
+            ease: "power3.inOut",
+          });
+
+          // Entering page: rotate in from opposite side + scale up + fade in
+          tl.fromTo(
+            entering,
+            {
+              rotateY: goingForward ? 60 : -90,
+              scale: 0.88,
+              opacity: 0,
+              transformOrigin: goingForward ? "right center" : "left center",
+            },
+            {
+              rotateY: 0,
+              scale: 1,
+              opacity: 1,
+              duration: 1,
+              ease: "power3.out",
+            },
+            "-=0.5", // overlap for seamless transition
+          );
+
+          // Update nav immediately
+          navItems.forEach((n) => n.classList.remove("active"));
+          navItems[targetIndex].classList.add("active");
         }
 
-        let navTicking = false;
-        window.addEventListener("scroll", () => {
-          if (!navTicking) {
-            requestAnimationFrame(() => {
-              updateNav();
-              navTicking = false;
-            });
-            navTicking = true;
+        // Nav clicks
+        navItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            navigateTo(parseInt(item.dataset.target));
+          });
+        });
+
+        // Keyboard
+        document.addEventListener("keydown", (e) => {
+          if (isAnimating) return;
+          if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+            e.preventDefault();
+            if (currentPage < pages.length - 1) navigateTo(currentPage + 1);
+          } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+            e.preventDefault();
+            if (currentPage > 0) navigateTo(currentPage - 1);
           }
         });
-        updateNav();
+
+        // Touch swipe
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener(
+          "touchstart",
+          (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+          },
+          { passive: true },
+        );
+
+        document.addEventListener(
+          "touchend",
+          (e) => {
+            if (isAnimating) return;
+            const dX = e.changedTouches[0].screenX - touchStartX;
+            const dY = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(dX) > 60 && Math.abs(dX) > Math.abs(dY)) {
+              if (dX < 0 && currentPage < pages.length - 1)
+                navigateTo(currentPage + 1);
+              else if (dX > 0 && currentPage > 0) navigateTo(currentPage - 1);
+            }
+          },
+          { passive: true },
+        );
       })();
 
-      // ── Intersection Observer for general reveals ──
-      const revealElements = document.querySelectorAll("[data-reveal]");
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const delay = entry.target.dataset.revealDelay || 0;
-              setTimeout(() => {
-                entry.target.classList.add("visible");
-              }, delay);
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
-      );
-
-      revealElements.forEach((el, i) => {
-        el.dataset.revealDelay = i * 120;
-        revealObserver.observe(el);
-      });
-
-      // ── Projects 3-Column Scroll Folio ──
+      // ── Projects: Click + Scroll switching ──
       (function () {
-        const scrollContainer = document.querySelector(".projects-scroll");
         const thumbs = document.querySelectorAll(".folio-thumb[data-thumb]");
         const infos = document.querySelectorAll(".folio-info[data-info]");
         const largeImgs = document.querySelectorAll(
           ".folio-large-img[data-large]",
         );
         const counterEl = document.getElementById("counterCurrent");
-        const progressFill = document.getElementById("projectsProgressFill");
-        const stripProgress = document.getElementById("stripProgress");
+        const projectsPage = document.querySelector(".page--projects");
         const numProjects = thumbs.length;
+        let currentProject = 0;
+        let scrollCooldown = false;
 
-        // Runway: each project gets 1.5 viewport of scroll + entry zone
-        const totalScreens = numProjects + 0.5;
-        scrollContainer.style.height = totalScreens * 100 + "vh";
+        function setActiveProject(index) {
+          if (index === currentProject || index < 0 || index >= numProjects)
+            return;
 
-        let currentActive = -1;
+          thumbs.forEach((t, i) => t.classList.toggle("active", i === index));
 
-        function setActive(index) {
-          if (index === currentActive) return;
-
-          // Thumbnails
-          thumbs.forEach((t, i) => {
-            t.classList.toggle("active", i === index);
-          });
-
-          // Center info panels
           infos.forEach((info, i) => {
             info.classList.remove("active", "exiting");
             if (i === index) info.classList.add("active");
             else if (i < index) info.classList.add("exiting");
           });
 
-          // Large videos — reset & play active, pause others
           largeImgs.forEach((container, i) => {
             container.classList.remove("active", "exiting");
             const vid = container.querySelector("video");
@@ -1581,60 +1397,79 @@
             }
           });
 
-          // Counter
-          if (index >= 0) {
-            counterEl.textContent = String(index + 1).padStart(2, "0");
-          }
-
-          currentActive = index;
+          counterEl.textContent = String(index + 1).padStart(2, "0");
+          currentProject = index;
         }
 
-        function update() {
-          const rect = scrollContainer.getBoundingClientRect();
-          const scrollRunway =
-            scrollContainer.offsetHeight - window.innerHeight;
-          const rawProgress = -rect.top / scrollRunway;
-          const progress = Math.max(0, Math.min(1, rawProgress));
-
-          // Progress bar
-          progressFill.style.width = progress * 100 + "%";
-
-          // Strip progress (vertical line on left)
-          if (stripProgress) {
-            stripProgress.style.height = progress * 100 + "%";
-          }
-
-          // Map to active project
-          const entryZone = 0.08;
-          let activeIndex = 0;
-
-          if (progress <= entryZone) {
-            activeIndex = 0;
-          } else {
-            const cardProgress = (progress - entryZone) / (1 - entryZone);
-            activeIndex = Math.min(
-              Math.floor(cardProgress * numProjects),
-              numProjects - 1,
-            );
-          }
-
-          setActive(activeIndex);
-        }
-
-        let ticking = false;
-        window.addEventListener("scroll", () => {
-          if (!ticking) {
-            requestAnimationFrame(() => {
-              update();
-              ticking = false;
-            });
-            ticking = true;
-          }
+        // Click on thumbnails
+        thumbs.forEach((thumb, i) => {
+          thumb.addEventListener("click", () => setActiveProject(i));
         });
 
-        // Initial
-        update();
+        // Mouse wheel to scroll through projects
+        projectsPage.addEventListener(
+          "wheel",
+          (e) => {
+            if (scrollCooldown) return;
+
+            // Scroll down → next project, scroll up → previous
+            if (e.deltaY > 30 && currentProject < numProjects - 1) {
+              e.preventDefault();
+              setActiveProject(currentProject + 1);
+              scrollCooldown = true;
+              setTimeout(() => {
+                scrollCooldown = false;
+              }, 700);
+            } else if (e.deltaY < -30 && currentProject > 0) {
+              e.preventDefault();
+              setActiveProject(currentProject - 1);
+              scrollCooldown = true;
+              setTimeout(() => {
+                scrollCooldown = false;
+              }, 700);
+            }
+          },
+          { passive: false },
+        );
+
+        // Vertical swipe to scroll through projects (mobile)
+        let projTouchStartY = 0;
+
+        projectsPage.addEventListener("touchstart", (e) => {
+          projTouchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        projectsPage.addEventListener("touchend", (e) => {
+          if (scrollCooldown) return;
+          const dY = e.changedTouches[0].screenY - projTouchStartY;
+
+          if (dY < -50 && currentProject < numProjects - 1) {
+            setActiveProject(currentProject + 1);
+            scrollCooldown = true;
+            setTimeout(() => { scrollCooldown = false; }, 700);
+          } else if (dY > 50 && currentProject > 0) {
+            setActiveProject(currentProject - 1);
+            scrollCooldown = true;
+            setTimeout(() => { scrollCooldown = false; }, 700);
+          }
+        }, { passive: true });
       })();
+
+      // ── Video play/pause on page navigation ──
+      function handleProjectVideos(pageIndex) {
+        const allVideos = document.querySelectorAll(".folio-large-img video");
+        if (pageIndex === 1) {
+          const activeVid = document.querySelector(
+            ".folio-large-img.active video",
+          );
+          if (activeVid) {
+            activeVid.currentTime = 0;
+            activeVid.play();
+          }
+        } else {
+          allVideos.forEach((v) => v.pause());
+        }
+      }
     </script>
   </body>
 </html>
