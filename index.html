@@ -84,7 +84,9 @@
         justify-content: center;
         align-items: center;
         gap: 28px;
-        transition: opacity 0.6s ease, visibility 0.6s ease;
+        transition:
+          opacity 0.6s ease,
+          visibility 0.6s ease;
       }
 
       .loader.done {
@@ -138,6 +140,229 @@
       .book-viewport.loaded,
       .bottom-nav.loaded {
         opacity: 1;
+      }
+
+      /* ============================================
+         MOBILE ONBOARDING HINT
+         ============================================ */
+      .onboarding {
+        position: fixed;
+        inset: 0;
+        z-index: 50000;
+        background: rgba(0, 0, 0, 0.5);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .onboarding.visible {
+        opacity: 1;
+      }
+
+      .onboarding.hiding {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (max-width: 900px) {
+        .onboarding {
+          display: flex;
+        }
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .onboarding {
+          display: flex;
+        }
+      }
+
+      /* Cute floating card */
+      .onboard-card {
+        background: var(--surface);
+        border-radius: 24px;
+        padding: 36px 32px 28px;
+        max-width: 300px;
+        width: 85%;
+        text-align: center;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.25),
+          0 4px 16px rgba(0, 0, 0, 0.1);
+        animation: cardBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        animation-delay: 0.2s;
+      }
+
+      @keyframes cardBounceIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      /* Phone with swipe animation */
+      .onboard-phone {
+        position: relative;
+        width: 64px;
+        height: 100px;
+        margin: 0 auto 20px;
+        border: 3px solid var(--ink);
+        border-radius: 14px;
+        background: var(--bg);
+      }
+
+      .onboard-phone::before {
+        content: "";
+        position: absolute;
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--ink);
+        opacity: 0.15;
+      }
+
+      /* Tiny page indicators inside phone */
+      .onboard-phone-pages {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 4px;
+      }
+
+      .onboard-phone-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--ink);
+        opacity: 0.12;
+      }
+
+      .onboard-phone-dot.active {
+        opacity: 0.5;
+        background: var(--accent);
+      }
+
+      /* Finger swiping across the phone */
+      .onboard-finger {
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        font-size: 28px;
+        animation: fingerSwipe 2.2s ease-in-out infinite;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+      }
+
+      @keyframes fingerSwipe {
+        0%,
+        100% {
+          transform: translateX(-50%) translateX(0) rotate(-10deg);
+        }
+        25% {
+          transform: translateX(-50%) translateX(22px) rotate(-5deg);
+        }
+        50% {
+          transform: translateX(-50%) translateX(0) rotate(-10deg);
+        }
+        75% {
+          transform: translateX(-50%) translateX(-22px) rotate(-15deg);
+        }
+      }
+
+      /* Sparkle dots */
+      .onboard-sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: sparkle 1.8s ease-in-out infinite;
+      }
+
+      .onboard-sparkle:nth-child(1) {
+        top: 8px;
+        right: -4px;
+        animation-delay: 0s;
+      }
+      .onboard-sparkle:nth-child(2) {
+        top: -4px;
+        left: 12px;
+        animation-delay: 0.6s;
+        width: 4px;
+        height: 4px;
+      }
+      .onboard-sparkle:nth-child(3) {
+        bottom: 20px;
+        right: -8px;
+        animation-delay: 1.2s;
+        width: 5px;
+        height: 5px;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .onboard-title {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: 22px;
+        color: var(--ink);
+        margin-bottom: 8px;
+        line-height: 1.2;
+      }
+
+      .onboard-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--ink-muted);
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .onboard-desc strong {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .onboard-btn {
+        display: inline-block;
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--surface);
+        background: var(--accent);
+        border: none;
+        border-radius: 999px;
+        padding: 10px 28px;
+        cursor: pointer;
+        transition:
+          transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .onboard-btn:active {
+        transform: scale(0.95);
       }
 
       /* ============================================
@@ -766,10 +991,10 @@
 
       .folio-num {
         font-family: "Cormorant Garamond", serif;
-        font-weight: 300;
+        font-weight: 700;
         font-size: clamp(40px, 5vw, 72px);
         line-height: 0.85;
-        color: rgba(244, 248, 240, 0.06);
+        color: rgba(244, 248, 240, 0.25);
         margin-bottom: 16px;
       }
 
@@ -820,6 +1045,239 @@
 
       .folio-visit:hover .folio-visit-arrow {
         transform: translate(3px, -3px);
+      }
+
+      /* Projects onboarding hint overlay */
+      .projects-hint {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.5);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.4s ease,
+          visibility 0.4s ease;
+      }
+
+      @media (max-width: 900px) {
+        .projects-hint {
+          display: flex;
+        }
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .projects-hint {
+          display: flex;
+        }
+      }
+
+      .projects-hint.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .projects-hint.hiding {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .projects-hint-card {
+        background: var(--surface);
+        border-radius: 24px;
+        padding: 36px 32px 28px;
+        max-width: 280px;
+        width: 85%;
+        text-align: center;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.3),
+          0 4px 16px rgba(0, 0, 0, 0.1);
+        animation: hintBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        animation-delay: 0.15s;
+      }
+
+      @keyframes hintBounceIn {
+        from {
+          opacity: 0;
+          transform: scale(0.75) translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      /* Scroll gesture — phone with vertical scroll */
+      .hint-phone {
+        position: relative;
+        width: 56px;
+        height: 88px;
+        margin: 0 auto 18px;
+        border: 3px solid var(--ink);
+        border-radius: 14px;
+        background: var(--bg);
+      }
+
+      .hint-phone::before {
+        content: "";
+        position: absolute;
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 18px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--ink);
+        opacity: 0.12;
+      }
+
+      /* Scroll arrows inside phone */
+      .hint-scroll-arrows {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        animation: scrollBounce 1.6s ease-in-out infinite;
+      }
+
+      .hint-scroll-arrows span {
+        font-size: 12px;
+        color: var(--ink);
+        opacity: 0.3;
+        line-height: 1;
+      }
+
+      .hint-scroll-arrows span:nth-child(2) {
+        opacity: 0.6;
+        font-size: 14px;
+      }
+
+      @keyframes scrollBounce {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(0);
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(6px);
+        }
+      }
+
+      /* Finger scrolling vertically */
+      .hint-finger {
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        font-size: 24px;
+        animation: fingerScroll 2s ease-in-out infinite;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+      }
+
+      @keyframes fingerScroll {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        30% {
+          transform: translateX(-50%) translateY(-14px);
+        }
+        60% {
+          transform: translateX(-50%) translateY(6px);
+        }
+      }
+
+      /* Sparkles */
+      .hint-sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: sparkle 1.8s ease-in-out infinite;
+      }
+
+      .hint-sparkle:nth-child(1) {
+        top: 6px;
+        right: -6px;
+        animation-delay: 0s;
+      }
+      .hint-sparkle:nth-child(2) {
+        top: -4px;
+        left: 10px;
+        animation-delay: 0.5s;
+        width: 4px;
+        height: 4px;
+      }
+      .hint-sparkle:nth-child(3) {
+        bottom: 18px;
+        right: -8px;
+        animation-delay: 1s;
+        width: 5px;
+        height: 5px;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .hint-title {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: 20px;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+
+      .hint-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--ink-muted);
+        line-height: 1.6;
+        margin-bottom: 18px;
+      }
+
+      .hint-desc strong {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .hint-btn {
+        display: inline-block;
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--surface);
+        background: var(--accent);
+        border: none;
+        border-radius: 999px;
+        padding: 10px 28px;
+        cursor: pointer;
+        transition:
+          transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .hint-btn:active {
+        transform: scale(0.95);
       }
 
       .folio-showcase {
@@ -1069,6 +1527,30 @@
       <div class="loader-percent" id="loaderPercent">0%</div>
     </div>
 
+    <!-- MOBILE ONBOARDING -->
+    <div class="onboarding" id="onboarding">
+      <div class="onboard-card">
+        <div class="onboard-phone">
+          <span class="onboard-sparkle"></span>
+          <span class="onboard-sparkle"></span>
+          <span class="onboard-sparkle"></span>
+          <div class="onboard-phone-pages">
+            <span class="onboard-phone-dot active"></span>
+            <span class="onboard-phone-dot"></span>
+            <span class="onboard-phone-dot"></span>
+            <span class="onboard-phone-dot"></span>
+          </div>
+          <div class="onboard-finger">👆</div>
+        </div>
+        <div class="onboard-title">Welcome!</div>
+        <div class="onboard-desc">
+          <strong>Swipe left or right</strong> to flip between pages, or use the
+          <strong>navigation bar</strong> below.
+        </div>
+        <button class="onboard-btn" id="onboardDismiss">Got it!</button>
+      </div>
+    </div>
+
     <div class="book-viewport" id="bookViewport">
       <!-- PAGE 1: HOME -->
       <div class="page page--home active" data-page="0">
@@ -1288,6 +1770,29 @@
               </div> -->
             </div>
           </div>
+
+          <!-- Projects scroll hint -->
+          <div class="projects-hint" id="projectsHint">
+            <div class="projects-hint-card">
+              <div class="hint-phone">
+                <span class="hint-sparkle"></span>
+                <span class="hint-sparkle"></span>
+                <span class="hint-sparkle"></span>
+                <div class="hint-scroll-arrows">
+                  <span>↑</span>
+                  <span>↕</span>
+                  <span>↓</span>
+                </div>
+                <div class="hint-finger">👆</div>
+              </div>
+              <div class="hint-title">More projects!</div>
+              <div class="hint-desc">
+                <strong>Scroll up or down</strong> <br />
+                to browse between projects.
+              </div>
+              <button class="hint-btn" id="projectsHintDismiss">Got it!</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1431,9 +1936,10 @@
 
         function updateProgress() {
           loadedCount++;
-          const pct = totalResources > 0
-            ? Math.round((loadedCount / totalResources) * 100)
-            : 100;
+          const pct =
+            totalResources > 0
+              ? Math.round((loadedCount / totalResources) * 100)
+              : 100;
           fill.style.width = pct + "%";
           percent.textContent = pct + "%";
 
@@ -1469,7 +1975,9 @@
           if (vid.readyState >= 3) {
             updateProgress();
           } else {
-            vid.addEventListener("canplaythrough", updateProgress, { once: true });
+            vid.addEventListener("canplaythrough", updateProgress, {
+              once: true,
+            });
             vid.addEventListener("error", updateProgress, { once: true });
           }
         });
@@ -1485,6 +1993,56 @@
             finishLoading();
           }
         }, 8000);
+      })();
+
+      // ── Mobile Onboarding Hint ──
+      (function () {
+        const onboarding = document.getElementById("onboarding");
+        if (!onboarding) return;
+
+        // Check if user has seen it before
+        const seen = localStorage.getItem("onboarding-seen");
+        if (seen) {
+          onboarding.style.display = "none";
+          return;
+        }
+
+        // Show after loading finishes
+        function showOnboarding() {
+          // Small delay after loader fades
+          setTimeout(() => {
+            onboarding.classList.add("visible");
+          }, 800);
+        }
+
+        // Watch for loader to finish
+        const loaderEl = document.getElementById("loader");
+        const observer = new MutationObserver(() => {
+          if (loaderEl.classList.contains("done")) {
+            observer.disconnect();
+            showOnboarding();
+          }
+        });
+        observer.observe(loaderEl, {
+          attributes: true,
+          attributeFilter: ["class"],
+        });
+
+        // Dismiss
+        function dismiss() {
+          onboarding.classList.add("hiding");
+          onboarding.classList.remove("visible");
+          localStorage.setItem("onboarding-seen", "1");
+          setTimeout(() => {
+            onboarding.style.display = "none";
+          }, 500);
+        }
+
+        var dismissBtn = document.getElementById("onboardDismiss");
+        if (dismissBtn) dismissBtn.addEventListener("click", dismiss);
+        onboarding.addEventListener("click", (e) => {
+          if (e.target === onboarding) dismiss();
+        });
       })();
 
       // ── GSAP Page Flip Navigation ──
@@ -1651,6 +2209,8 @@
 
           counterEl.textContent = String(index + 1).padStart(2, "0");
           currentProject = index;
+
+          currentProject = index;
         }
 
         // Click on thumbnails
@@ -1717,6 +2277,54 @@
           },
           { passive: true },
         );
+      })();
+
+      // ── Projects scroll hint ──
+      (function () {
+        const hint = document.getElementById("projectsHint");
+        const dismissBtn = document.getElementById("projectsHintDismiss");
+        if (!hint) return;
+
+        const seen = localStorage.getItem("projects-hint-seen");
+        if (seen) {
+          hint.style.display = "none";
+          return;
+        }
+
+        // Show when user navigates to projects page
+        function showHint() {
+          hint.classList.add("visible");
+        }
+
+        function dismissHint() {
+          hint.classList.remove("visible");
+          hint.classList.add("hiding");
+          localStorage.setItem("projects-hint-seen", "1");
+          setTimeout(() => {
+            hint.style.display = "none";
+          }, 400);
+        }
+
+        if (dismissBtn) dismissBtn.addEventListener("click", dismissHint);
+        hint.addEventListener("click", (e) => {
+          if (e.target === hint) dismissHint();
+        });
+
+        // Watch for projects page becoming active
+        const projectsPage = document.querySelector(".page--projects");
+        const observer = new MutationObserver(() => {
+          if (
+            projectsPage.classList.contains("active") &&
+            !localStorage.getItem("projects-hint-seen")
+          ) {
+            setTimeout(showHint, 600);
+            observer.disconnect();
+          }
+        });
+        observer.observe(projectsPage, {
+          attributes: true,
+          attributeFilter: ["class"],
+        });
       })();
 
       // ── Video play/pause on page navigation ──
