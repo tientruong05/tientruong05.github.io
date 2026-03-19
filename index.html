@@ -72,6 +72,75 @@
       }
 
       /* ============================================
+         LOADING SCREEN
+         ============================================ */
+      .loader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: var(--ink);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+        transition: opacity 0.6s ease, visibility 0.6s ease;
+      }
+
+      .loader.done {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .loader-name {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 700;
+        font-size: clamp(24px, 4vw, 40px);
+        color: var(--bg);
+        letter-spacing: -0.02em;
+        opacity: 0.9;
+      }
+
+      .loader-track {
+        width: clamp(200px, 40vw, 360px);
+        height: 2px;
+        background: rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .loader-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .loader-percent {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        color: var(--accent);
+      }
+
+      /* Hide main content until loaded */
+      .book-viewport,
+      .bottom-nav {
+        opacity: 0;
+        transition: opacity 0.5s ease 0.2s;
+      }
+
+      .book-viewport.loaded,
+      .bottom-nav.loaded {
+        opacity: 1;
+      }
+
+      /* ============================================
          PAGE SYSTEM — GSAP-DRIVEN
          ============================================ */
       .book-viewport {
@@ -212,6 +281,18 @@
         margin-bottom: 20px;
       }
 
+      .hero-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .hero-header-text {
+        flex: 1;
+      }
+
       .hero-name {
         font-family: "Cormorant Garamond", serif;
         font-weight: 700;
@@ -219,7 +300,14 @@
         line-height: 0.92;
         letter-spacing: -0.03em;
         color: var(--ink);
-        margin-bottom: 28px;
+        margin-bottom: 0;
+      }
+
+      .hero-portrait {
+        width: clamp(120px, 25vw, 220px);
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 12px;
       }
 
       .hero-name .accent-dot {
@@ -899,7 +987,6 @@
           padding: 32px 24px 100px;
         }
 
-
         .page--experience .page-content {
           padding: 48px 24px 120px;
         }
@@ -973,15 +1060,33 @@
   </head>
 
   <body>
-    <div class="book-viewport">
+    <!-- LOADING SCREEN -->
+    <div class="loader" id="loader">
+      <div class="loader-name">Trương Minh Tiến</div>
+      <div class="loader-track">
+        <div class="loader-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader-percent" id="loaderPercent">0%</div>
+    </div>
+
+    <div class="book-viewport" id="bookViewport">
       <!-- PAGE 1: HOME -->
       <div class="page page--home active" data-page="0">
         <div class="page-content">
           <div class="hero-left">
-            <div class="hero-overline">Web Developer &amp; Builder</div>
-            <h1 class="hero-name">
-              Trương<br />Minh Tiến<span class="accent-dot">.</span>
-            </h1>
+            <div class="hero-header-row">
+              <div class="hero-header-text">
+                <div class="hero-overline">Web Developer &amp; Builder</div>
+                <h1 class="hero-name">
+                  Trương<br />Minh Tiến<span class="accent-dot">.</span>
+                </h1>
+              </div>
+              <img
+                src="image/Tien.png"
+                alt="Trương Minh Tiến portrait"
+                class="hero-portrait"
+              />
+            </div>
             <p class="hero-tagline">
               I build things for the web &amp; figure out the
               <em>rest</em> along the way.
@@ -1034,7 +1139,7 @@
             </div>
             <div class="projects-counter-top">
               <span class="ct-active" id="counterCurrent">01</span>
-              <span> / 03</span>
+              <span> / 02</span>
             </div>
           </div>
           <div class="projects-columns">
@@ -1050,10 +1155,18 @@
                 <img src="image/2stinkering.jpg" alt="2S Tinkering Shop" />
                 <span class="folio-thumb-num">02</span>
               </div>
-              <div class="folio-thumb" data-thumb="2">
+              <!-- <div class="folio-thumb" data-thumb="2">
                 <img src="image/zander.jpg" alt="Tổ Tò Mò" />
                 <span class="folio-thumb-num">03</span>
               </div>
+              <div class="folio-thumb" data-thumb="3">
+                <img src="image/project-04.jpg" alt="Project 04" />
+                <span class="folio-thumb-num">04</span>
+              </div>
+              <div class="folio-thumb" data-thumb="4">
+                <img src="image/project-05.jpg" alt="Project 05" />
+                <span class="folio-thumb-num">05</span>
+              </div> -->
             </div>
             <div class="folio-center">
               <div class="folio-info active" data-info="0">
@@ -1082,7 +1195,7 @@
                   Visit Project <span class="folio-visit-arrow">↗</span>
                 </a>
               </div>
-              <div class="folio-info" data-info="2">
+              <!-- <div class="folio-info" data-info="2">
                 <div class="folio-num">03</div>
                 <div class="folio-name">Tổ Tò Mò</div>
                 <div class="folio-url">totomo.org</div>
@@ -1095,6 +1208,32 @@
                   Visit Project <span class="folio-visit-arrow">↗</span>
                 </a>
               </div>
+              <div class="folio-info" data-info="3">
+                <div class="folio-num">04</div>
+                <div class="folio-name">Project 04</div>
+                <div class="folio-url">example.com</div>
+                <a
+                  href="https://example.com"
+                  target="_blank"
+                  rel="noopener"
+                  class="folio-visit"
+                >
+                  Visit Project <span class="folio-visit-arrow">↗</span>
+                </a>
+              </div>
+              <div class="folio-info" data-info="4">
+                <div class="folio-num">05</div>
+                <div class="folio-name">Project 05</div>
+                <div class="folio-url">example.com</div>
+                <a
+                  href="https://example.com"
+                  target="_blank"
+                  rel="noopener"
+                  class="folio-visit"
+                >
+                  Visit Project <span class="folio-visit-arrow">↗</span>
+                </a>
+              </div> -->
             </div>
             <div class="folio-showcase">
               <div class="folio-large-img active" data-large="0">
@@ -1117,7 +1256,7 @@
                   preload="auto"
                 ></video>
               </div>
-              <div class="folio-large-img" data-large="2">
+              <!-- <div class="folio-large-img" data-large="2">
                 <video
                   src="video/2stinkering.mp4"
                   loop
@@ -1127,6 +1266,26 @@
                   preload="auto"
                 ></video>
               </div>
+              <div class="folio-large-img" data-large="3">
+                <video
+                  src="video/project-04.mp4"
+                  loop
+                  muted
+                  playsinline
+                  disablepictureinpicture
+                  preload="auto"
+                ></video>
+              </div>
+              <div class="folio-large-img" data-large="4">
+                <video
+                  src="video/project-05.mp4"
+                  loop
+                  muted
+                  playsinline
+                  disablepictureinpicture
+                  preload="auto"
+                ></video>
+              </div> -->
             </div>
           </div>
         </div>
@@ -1163,9 +1322,18 @@
               <div class="exp-body">
                 <h3>Website Developer</h3>
                 <ul class="exp-points">
-                  <li>Refactored &amp; redesigned main pages on a ReactJS-based website for cleaner UI</li>
-                  <li>Used Postman to test .NET APIs, ensuring correct frontend data display</li>
-                  <li>Spotted and fixed various UI bugs for smoother user experience</li>
+                  <li>
+                    Refactored &amp; redesigned main pages on a ReactJS-based
+                    website for cleaner UI
+                  </li>
+                  <li>
+                    Used Postman to test .NET APIs, ensuring correct frontend
+                    data display
+                  </li>
+                  <li>
+                    Spotted and fixed various UI bugs for smoother user
+                    experience
+                  </li>
                   <li>Leveraged AI tools to speed up repetitive tasks</li>
                 </ul>
               </div>
@@ -1179,10 +1347,22 @@
               <div class="exp-body">
                 <h3>Manual Tester</h3>
                 <ul class="exp-points">
-                  <li>Contributed to post-migration website testing (UI Testing Project)</li>
-                  <li>Analyzed user stories, JSON files &amp; Figma designs to understand requirements</li>
-                  <li>Executed tests based on detailed design specs to verify functionality</li>
-                  <li>Logged &amp; tracked bugs in Jira, fostering effective dev communication</li>
+                  <li>
+                    Contributed to post-migration website testing (UI Testing
+                    Project)
+                  </li>
+                  <li>
+                    Analyzed user stories, JSON files &amp; Figma designs to
+                    understand requirements
+                  </li>
+                  <li>
+                    Executed tests based on detailed design specs to verify
+                    functionality
+                  </li>
+                  <li>
+                    Logged &amp; tracked bugs in Jira, fostering effective dev
+                    communication
+                  </li>
                 </ul>
               </div>
             </div>
@@ -1227,7 +1407,7 @@
     </div>
 
     <!-- FLOATING BOTTOM NAV -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav" id="bottomNav">
       <button class="bottom-nav-item active" data-target="0">Home</button>
       <button class="bottom-nav-item" data-target="1">Projects</button>
       <button class="bottom-nav-item" data-target="2">Experience</button>
@@ -1235,6 +1415,78 @@
     </nav>
 
     <script>
+      // ── Loading Screen ──
+      (function () {
+        const loader = document.getElementById("loader");
+        const fill = document.getElementById("loaderFill");
+        const percent = document.getElementById("loaderPercent");
+        const viewport = document.getElementById("bookViewport");
+        const nav = document.getElementById("bottomNav");
+
+        // Collect all resources to track
+        const images = Array.from(document.querySelectorAll("img"));
+        const videos = Array.from(document.querySelectorAll("video"));
+        const totalResources = images.length + videos.length;
+        let loadedCount = 0;
+
+        function updateProgress() {
+          loadedCount++;
+          const pct = totalResources > 0
+            ? Math.round((loadedCount / totalResources) * 100)
+            : 100;
+          fill.style.width = pct + "%";
+          percent.textContent = pct + "%";
+
+          if (loadedCount >= totalResources) {
+            finishLoading();
+          }
+        }
+
+        function finishLoading() {
+          // Ensure we show 100%
+          fill.style.width = "100%";
+          percent.textContent = "100%";
+
+          setTimeout(() => {
+            loader.classList.add("done");
+            viewport.classList.add("loaded");
+            nav.classList.add("loaded");
+          }, 400);
+        }
+
+        // Track images
+        images.forEach((img) => {
+          if (img.complete) {
+            updateProgress();
+          } else {
+            img.addEventListener("load", updateProgress);
+            img.addEventListener("error", updateProgress);
+          }
+        });
+
+        // Track videos (canplaythrough = enough data to play)
+        videos.forEach((vid) => {
+          if (vid.readyState >= 3) {
+            updateProgress();
+          } else {
+            vid.addEventListener("canplaythrough", updateProgress, { once: true });
+            vid.addEventListener("error", updateProgress, { once: true });
+          }
+        });
+
+        // Fallback: if no resources or everything cached, finish quickly
+        if (totalResources === 0) {
+          finishLoading();
+        }
+
+        // Safety timeout — don't block forever
+        setTimeout(() => {
+          if (!loader.classList.contains("done")) {
+            finishLoading();
+          }
+        }, 8000);
+      })();
+
       // ── GSAP Page Flip Navigation ──
       (function () {
         const pages = document.querySelectorAll(".page[data-page]");
@@ -1435,24 +1687,36 @@
         // Vertical swipe to scroll through projects (mobile)
         let projTouchStartY = 0;
 
-        projectsPage.addEventListener("touchstart", (e) => {
-          projTouchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
+        projectsPage.addEventListener(
+          "touchstart",
+          (e) => {
+            projTouchStartY = e.changedTouches[0].screenY;
+          },
+          { passive: true },
+        );
 
-        projectsPage.addEventListener("touchend", (e) => {
-          if (scrollCooldown) return;
-          const dY = e.changedTouches[0].screenY - projTouchStartY;
+        projectsPage.addEventListener(
+          "touchend",
+          (e) => {
+            if (scrollCooldown) return;
+            const dY = e.changedTouches[0].screenY - projTouchStartY;
 
-          if (dY < -50 && currentProject < numProjects - 1) {
-            setActiveProject(currentProject + 1);
-            scrollCooldown = true;
-            setTimeout(() => { scrollCooldown = false; }, 700);
-          } else if (dY > 50 && currentProject > 0) {
-            setActiveProject(currentProject - 1);
-            scrollCooldown = true;
-            setTimeout(() => { scrollCooldown = false; }, 700);
-          }
-        }, { passive: true });
+            if (dY < -50 && currentProject < numProjects - 1) {
+              setActiveProject(currentProject + 1);
+              scrollCooldown = true;
+              setTimeout(() => {
+                scrollCooldown = false;
+              }, 700);
+            } else if (dY > 50 && currentProject > 0) {
+              setActiveProject(currentProject - 1);
+              scrollCooldown = true;
+              setTimeout(() => {
+                scrollCooldown = false;
+              }, 700);
+            }
+          },
+          { passive: true },
+        );
       })();
 
       // ── Video play/pause on page navigation ──
