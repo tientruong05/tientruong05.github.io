@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tracking 30 Ngày Mobile</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 12px 12px 40px 12px;
+            font-size: 15px;
+        }
+
+        /* Header App */
+        .app-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+
+        .app-header h1 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .app-header p {
+            margin: 0 0 12px 0;
+            font-size: 12px;
+            color: #93c5fd;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: #38bdf8;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Week Section Header */
+        .week-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 18px 4px 8px 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Mobile Card Item */
+        .day-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .day-number {
+            font-weight: 800;
+            font-size: 13px;
+            color: #475569;
+            background: #f8fafc;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .day-date {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .task-badge {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        /* Badges styling */
+        .badge-t24 { background-color: #dbeafe; color: #1e40af; }
+        .badge-t3 { background-color: #dcfce7; color: #166534; }
+        .badge-t5 { background-color: #fef3c7; color: #92400e; }
+        .badge-t67 { background-color: #fce7f3; color: #9d174d; }
+        .badge-cn { background-color: #e0f2fe; color: #0369a1; }
+
+        /* Action Buttons Area (Touch Friendly) */
+        .check-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .check-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 8px 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 52px;
+        }
+
+        .check-btn span {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            margin-top: 2px;
+        }
+
+        .check-btn input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .check-btn.checked {
+            background-color: #eff6ff;
+            border-color: var(--secondary);
+        }
+
+        .check-btn.checked span {
+            color: var(--secondary);
+        }
+
+        /* Note Input */
+        .note-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            background: #fafafa;
+            color: var(--text);
+            outline: none;
+        }
+
+        .note-input:focus {
+            background: #ffffff;
+            border-color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-header">
+        <h1>Tracking 30 Ngày</h1>
+        <p>Lộ trình tối ưu thể lực & sinh lý cho nam giới</p>
+        
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Tiến độ hoàn thành</span>
+                <span id="progress-text">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cards-container"></div>
+
+    <script>
+        const daysData = [
+            // Tuần 1
+            { week: "TUẦN 1: KHỞI ĐỘNG & TẠO THÓI QUEN" },
+            { id: 1, date: "Thứ 2, 10/08", task: "🏋️ Sức Mạnh: Squat/Bridge/Plank/Pushup", tag: "badge-t24" },
+            { id: 2, date: "Thứ 3, 11/08", task: "🏃 Cardio Combo + Thở Bụng", tag: "badge-t3" },
+            { id: 3, date: "Thứ 4, 12/08", task: "🏋️ Sức Mạnh: Squat/Bridge + Kegel", tag: "badge-t24" },
+            { id: 4, date: "Thứ 5, 13/08", task: "🧘 Xả Cơ Giữ Sức: Đi bộ + Thở bụng", tag: "badge-t5" },
+            { id: 5, date: "Thứ 6, 14/08", task: "❤️ Hẹn Hò & Đêm Thân Mật (Nghỉ tập)", tag: "badge-t67", noEx: true },
+            { id: 6, date: "Thứ 7, 15/08", task: "❤️ Thân Mật Buổi 2 / Thả Lỏng Nhẹ", tag: "badge-t67", noEx: true },
+            { id: 7, date: "Chủ Nhật, 16/08", task: "🛹 Trượt Ván Chiều / Nghỉ Ngơi", tag: "badge-cn" },
+
+            // Tuần 2
+            { week: "TUẦN 2: TĂNG CƯỜNG ĐỘ & GIỮ CƠ" },
+            { id: 8, date: "Thứ 2, 17/08", task: "🏋️ Sức Mạnh: Squat/Bridge/Plank/Pushup", tag: "badge-t24" },
+            { id: 9, date: "Thứ 3, 18/08", task: "🏃 Cardio Combo + Thở Bụng", tag: "badge-t3" },
+            { id: 10, date: "Thứ 4, 19/08", task: "🏋️ Sức Mạnh: Squat/Bridge + Kegel", tag: "badge-t24" },
+            { id: 11, date: "Thứ 5, 20/08", task: "🧘 Xả Cơ Giữ Sức: Đi bộ + Thở bụng", tag: "badge-t5" },
+            { id: 12, date: "Thứ 6, 21/08", task: "❤️ Hẹn Hò & Đêm Thân Mật (Nghỉ tập)", tag: "badge-t67", noEx: true },
+            { id: 13, date: "Thứ 7, 22/08", task: "❤️ Thân Mật Buổi 2 / Thả Lỏng Nhẹ", tag: "badge-t67", noEx: true },
+            { id: 14, date: "Chủ Nhật, 23/08", task: "🛹 Trượt Ván Chiều / Nghỉ Ngơi", tag: "badge-cn" },
+
+            // Tuần 3
+            { week: "TUẦN 3: TỐI ƯU PHẢN XẠ THỞ & CHẬU" },
+            { id: 15, date: "Thứ 2, 24/08", task: "🏋️ Sức Mạnh: Squat/Bridge/Plank/Pushup", tag: "badge-t24" },
+            { id: 16, date: "Thứ 3, 25/08", task: "🏃 Cardio Combo + Thở Bụng", tag: "badge-t3" },
+            { id: 17, date: "Thứ 4, 26/08", task: "🏋️ Sức Mạnh: Squat/Bridge + Kegel", tag: "badge-t24" },
+            { id: 18, date: "Thứ 5, 27/08", task: "🧘 Xả Cơ Giữ Sức: Đi bộ + Thở bụng", tag: "badge-t5" },
+            { id: 19, date: "Thứ 6, 28/08", task: "❤️ Hẹn Hò & Đêm Thân Mật (Nghỉ tập)", tag: "badge-t67", noEx: true },
+            { id: 20, date: "Thứ 7, 29/08", task: "❤️ Thân Mật Buổi 2 / Thả Lỏng Nhẹ", tag: "badge-t67", noEx: true },
+            { id: 21, date: "Chủ Nhật, 30/08", task: "🛹 Trượt Ván Chiều / Nghỉ Ngơi", tag: "badge-cn" },
+
+            // Tuần 4
+            { week: "TUẦN 4: DUY TRÌ BỀN VỮNG & TỔNG KẾT" },
+            { id: 22, date: "Thứ 2, 31/08", task: "🏋️ Sức Mạnh: Squat/Bridge/Plank/Pushup", tag: "badge-t24" },
+            { id: 23, date: "Thứ 3, 01/09", task: "🏃 Cardio Combo + Thở Bụng", tag: "badge-t3" },
+            { id: 24, date: "Thứ 4, 02/09", task: "🏋️ Sức Mạnh: Squat/Bridge + Kegel", tag: "badge-t24" },
+            { id: 25, date: "Thứ 5, 03/09", task: "🧘 Xả Cơ Giữ Sức: Đi bộ + Thở bụng", tag: "badge-t5" },
+            { id: 26, date: "Thứ 6, 04/09", task: "❤️ Hẹn Hò & Đêm Thân Mật (Nghỉ tập)", tag: "badge-t67", noEx: true },
+            { id: 27, date: "Thứ 7, 05/09", task: "❤️ Thân Mật Buổi 2 / Thả Lỏng Nhẹ", tag: "badge-t67", noEx: true },
+            { id: 28, date: "Chủ Nhật, 06/09", task: "🛹 Trượt Ván Chiều / Nghỉ Ngơi", tag: "badge-cn" },
+            { id: 29, date: "Thứ 2, 07/09", task: "🏋️ Sức Mạnh: Squat/Bridge/Plank/Pushup", tag: "badge-t24" },
+            { id: 30, date: "Thứ 3, 08/09", task: "🎉 Cardio: Tổng kết 30 ngày tập luyện", tag: "badge-t3" }
+        ];
+
+        const container = document.getElementById('cards-container');
+
+        daysData.forEach(item => {
+            if (item.week) {
+                const weekEl = document.createElement('div');
+                weekEl.className = 'week-title';
+                weekEl.innerText = item.week;
+                container.appendChild(weekEl);
+            } else {
+                const exChecked = localStorage.getItem(`ex_${item.id}`) === 'true';
+                const pcChecked = localStorage.getItem(`pc_${item.id}`) === 'true';
+                const breatheChecked = localStorage.getItem(`breathe_${item.id}`) === 'true';
+                const noteVal = localStorage.getItem(`note_${item.id}`) || '';
+
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                card.innerHTML = `
+                    <div class="card-top">
+                        <span class="day-date">${item.date}</span>
+                        <span class="day-number">Ngày ${item.id}</span>
+                    </div>
+                    <div class="task-badge ${item.tag}">${item.task}</div>
+                    <div class="check-group">
+                        ${!item.noEx ? `
+                            <label class="check-btn ${exChecked ? 'checked' : ''}">
+                                <input type="checkbox" onchange="toggleCheck(this, 'ex_${item.id}')" ${exChecked ? 'checked' : ''}>
+                                <span>TẬP</span>
+                            </label>
+                        ` : `
+                            <div class="check-btn" style="opacity: 0.4; background:#f1f5f9;">
+                                <span style="margin:auto;">NGHỈ</span>
+                            </div>
+                        `}
+                        <label class="check-btn ${pcChecked ? 'checked' : ''}">
+                            <input type="checkbox" onchange="toggleCheck(this, 'pc_${item.id}')" ${pcChecked ? 'checked' : ''}>
+                            <span>KEGEL PC</span>
+                        </label>
+                        <label class="check-btn ${breatheChecked ? 'checked' : ''}">
+                            <input type="checkbox" onchange="toggleCheck(this, 'breathe_${item.id}')" ${breatheChecked ? 'checked' : ''}>
+                            <span>THỞ BỤNG</span>
+                        </label>
+                    </div>
+                    <input type="text" class="note-input" placeholder="Nhập ghi chú / cảm nhận..." value="${noteVal}" onchange="saveNote('note_${item.id}', this.value)">
+                `;
+                container.appendChild(card);
+            }
+        });
+
+        function toggleCheck(input, key) {
+            const isChecked = input.checked;
+            localStorage.setItem(key, isChecked);
+            const parent = input.closest('.check-btn');
+            if (isChecked) {
+                parent.classList.add('checked');
+            } else {
+                parent.classList.remove('checked');
+            }
+            updateProgress();
+        }
+
+        function saveNote(key, val) {
+            localStorage.setItem(key, val);
+        }
+
+        function updateProgress() {
+            let total = 0;
+            let checkedCount = 0;
+            
+            daysData.forEach(item => {
+                if (!item.week) {
+                    if (!item.noEx) total++;
+                    total += 2; // PC & Breathe
+
+                    if (!item.noEx && localStorage.getItem(`ex_${item.id}`) === 'true') checkedCount++;
+                    if (localStorage.getItem(`pc_${item.id}`) === 'true') checkedCount++;
+                    if (localStorage.getItem(`breathe_${item.id}`) === 'true') checkedCount++;
+                }
+            });
+
+            const percent = Math.round((checkedCount / total) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-text').innerText = percent + '%';
+        }
+
+        // Init Progress on Load
+        updateProgress();
+    </script>
+</body>
+</html>
